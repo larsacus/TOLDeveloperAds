@@ -1,0 +1,18 @@
+
+PODS:
+- AFNetworking (1.1.0)
+- LARSAdController/Core (3.0.0)
+
+DEPENDENCIES:
+- AFNetworking
+- LARSAdController/Core (from `~/Projects/OpenSource/Specs/LARSAdController/3.0.0/LARSAdController.podspec')
+
+EXTERNAL SOURCES:
+  LARSAdController/Core:
+    :podspec: ~/Projects/OpenSource/Specs/LARSAdController/3.0.0/LARSAdController.podspec
+
+SPEC CHECKSUMS:
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  LARSAdController/Core: b8d30c82e402e76836b7765dcd05596942b9d2d8
+
+COCOAPODS: 0.16.0

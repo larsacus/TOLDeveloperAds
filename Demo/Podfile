@@ -1,0 +1,4 @@
+platform :ios, '5.0'
+
+pod 'AFNetworking'
+pod 'LARSAdController/Core', '~> 3.0', :podspec =>  "~/Projects/OpenSource/Specs/LARSAdController/3.0.0/LARSAdController.podspec"

@@ -1,0 +1,366 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */; };
+		468A4FAB169D2D17007DF9B9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 468A4FAA169D2D17007DF9B9 /* MobileCoreServices.framework */; };
+		468A4FAD169D2D1C007DF9B9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 468A4FAC169D2D1C007DF9B9 /* SystemConfiguration.framework */; };
+		46D9ECC7169D039800C06EFD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC6169D039800C06EFD /* UIKit.framework */; };
+		46D9ECC9169D039800C06EFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC8169D039800C06EFD /* Foundation.framework */; };
+		46D9ECCB169D039800C06EFD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECCA169D039800C06EFD /* CoreGraphics.framework */; };
+		46D9ECD1169D039800C06EFD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECCF169D039800C06EFD /* InfoPlist.strings */; };
+		46D9ECD3169D039800C06EFD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D9ECD2169D039800C06EFD /* main.m */; };
+		46D9ECD7169D039800C06EFD /* TOLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D9ECD6169D039800C06EFD /* TOLAppDelegate.m */; };
+		46D9ECD9169D039800C06EFD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECD8169D039800C06EFD /* Default.png */; };
+		46D9ECDB169D039800C06EFD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECDA169D039800C06EFD /* Default@2x.png */; };
+		46D9ECDD169D039800C06EFD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECDC169D039800C06EFD /* Default-568h@2x.png */; };
+		46D9ECE0169D039800C06EFD /* TOLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D9ECDF169D039800C06EFD /* TOLViewController.m */; };
+		46D9ECE3169D039800C06EFD /* TOLViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECE1169D039800C06EFD /* TOLViewController_iPhone.xib */; };
+		46D9ECE6169D039800C06EFD /* TOLViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECE4169D039800C06EFD /* TOLViewController_iPad.xib */; };
+		BF72DFD61D8B4E6FB527493C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA9A0D6BA8940B58B02D5A3 /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		468A4E8F169D047C007DF9B9 /* TOLDeveloperAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOLDeveloperAds.h; sourceTree = "<group>"; };
+		468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOLDeveloperAds.m; sourceTree = "<group>"; };
+		468A4FA8169D256D007DF9B9 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		468A4FAA169D2D17007DF9B9 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		468A4FAC169D2D1C007DF9B9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		46D9ECC2169D039800C06EFD /* DeveloperAdsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeveloperAdsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		46D9ECC6169D039800C06EFD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		46D9ECC8169D039800C06EFD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		46D9ECCA169D039800C06EFD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		46D9ECCE169D039800C06EFD /* DeveloperAdsDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DeveloperAdsDemo-Info.plist"; sourceTree = "<group>"; };
+		46D9ECD0169D039800C06EFD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		46D9ECD2169D039800C06EFD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		46D9ECD4169D039800C06EFD /* DeveloperAdsDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DeveloperAdsDemo-Prefix.pch"; sourceTree = "<group>"; };
+		46D9ECD5169D039800C06EFD /* TOLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TOLAppDelegate.h; sourceTree = "<group>"; };
+		46D9ECD6169D039800C06EFD /* TOLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TOLAppDelegate.m; sourceTree = "<group>"; };
+		46D9ECD8169D039800C06EFD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		46D9ECDA169D039800C06EFD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		46D9ECDC169D039800C06EFD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		46D9ECDE169D039800C06EFD /* TOLViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TOLViewController.h; sourceTree = "<group>"; };
+		46D9ECDF169D039800C06EFD /* TOLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TOLViewController.m; sourceTree = "<group>"; };
+		46D9ECE2169D039800C06EFD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TOLViewController_iPhone.xib; sourceTree = "<group>"; };
+		46D9ECE5169D039800C06EFD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TOLViewController_iPad.xib; sourceTree = "<group>"; };
+		9F3F7CA618204A4785DEB776 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		BFA9A0D6BA8940B58B02D5A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		46D9ECBF169D039800C06EFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				468A4FAD169D2D1C007DF9B9 /* SystemConfiguration.framework in Frameworks */,
+				468A4FAB169D2D17007DF9B9 /* MobileCoreServices.framework in Frameworks */,
+				46D9ECC7169D039800C06EFD /* UIKit.framework in Frameworks */,
+				46D9ECC9169D039800C06EFD /* Foundation.framework in Frameworks */,
+				46D9ECCB169D039800C06EFD /* CoreGraphics.framework in Frameworks */,
+				BF72DFD61D8B4E6FB527493C /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		468A4E8D169D0464007DF9B9 /* TOLDeveloperAds */ = {
+			isa = PBXGroup;
+			children = (
+				468A4E8F169D047C007DF9B9 /* TOLDeveloperAds.h */,
+				468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */,
+			);
+			name = TOLDeveloperAds;
+			path = ../TOLDeveloperAds;
+			sourceTree = "<group>";
+		};
+		46D9ECB7169D039800C06EFD = {
+			isa = PBXGroup;
+			children = (
+				468A4FA8169D256D007DF9B9 /* Podfile */,
+				46D9ECCC169D039800C06EFD /* DeveloperAdsDemo */,
+				468A4E8D169D0464007DF9B9 /* TOLDeveloperAds */,
+				46D9ECC5169D039800C06EFD /* Frameworks */,
+				46D9ECC3169D039800C06EFD /* Products */,
+				9F3F7CA618204A4785DEB776 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		46D9ECC3169D039800C06EFD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				46D9ECC2169D039800C06EFD /* DeveloperAdsDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		46D9ECC5169D039800C06EFD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				468A4FAA169D2D17007DF9B9 /* MobileCoreServices.framework */,
+				468A4FAC169D2D1C007DF9B9 /* SystemConfiguration.framework */,
+				46D9ECC6169D039800C06EFD /* UIKit.framework */,
+				46D9ECC8169D039800C06EFD /* Foundation.framework */,
+				46D9ECCA169D039800C06EFD /* CoreGraphics.framework */,
+				BFA9A0D6BA8940B58B02D5A3 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		46D9ECCC169D039800C06EFD /* DeveloperAdsDemo */ = {
+			isa = PBXGroup;
+			children = (
+				46D9ECD5169D039800C06EFD /* TOLAppDelegate.h */,
+				46D9ECD6169D039800C06EFD /* TOLAppDelegate.m */,
+				46D9ECDE169D039800C06EFD /* TOLViewController.h */,
+				46D9ECDF169D039800C06EFD /* TOLViewController.m */,
+				46D9ECE1169D039800C06EFD /* TOLViewController_iPhone.xib */,
+				46D9ECE4169D039800C06EFD /* TOLViewController_iPad.xib */,
+				46D9ECCD169D039800C06EFD /* Supporting Files */,
+			);
+			path = DeveloperAdsDemo;
+			sourceTree = "<group>";
+		};
+		46D9ECCD169D039800C06EFD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				46D9ECCE169D039800C06EFD /* DeveloperAdsDemo-Info.plist */,
+				46D9ECCF169D039800C06EFD /* InfoPlist.strings */,
+				46D9ECD2169D039800C06EFD /* main.m */,
+				46D9ECD4169D039800C06EFD /* DeveloperAdsDemo-Prefix.pch */,
+				46D9ECD8169D039800C06EFD /* Default.png */,
+				46D9ECDA169D039800C06EFD /* Default@2x.png */,
+				46D9ECDC169D039800C06EFD /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		46D9ECC1169D039800C06EFD /* DeveloperAdsDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 46D9ECE9169D039800C06EFD /* Build configuration list for PBXNativeTarget "DeveloperAdsDemo" */;
+			buildPhases = (
+				46D9ECBE169D039800C06EFD /* Sources */,
+				46D9ECBF169D039800C06EFD /* Frameworks */,
+				46D9ECC0169D039800C06EFD /* Resources */,
+				BBD758202A964B7A80C746D1 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DeveloperAdsDemo;
+			productName = DeveloperAdsDemo;
+			productReference = 46D9ECC2169D039800C06EFD /* DeveloperAdsDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46D9ECB9169D039800C06EFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = TOL;
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Lars Anderson";
+			};
+			buildConfigurationList = 46D9ECBC169D039800C06EFD /* Build configuration list for PBXProject "DeveloperAdsDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 46D9ECB7169D039800C06EFD;
+			productRefGroup = 46D9ECC3169D039800C06EFD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				46D9ECC1169D039800C06EFD /* DeveloperAdsDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		46D9ECC0169D039800C06EFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46D9ECD1169D039800C06EFD /* InfoPlist.strings in Resources */,
+				46D9ECD9169D039800C06EFD /* Default.png in Resources */,
+				46D9ECDB169D039800C06EFD /* Default@2x.png in Resources */,
+				46D9ECDD169D039800C06EFD /* Default-568h@2x.png in Resources */,
+				46D9ECE3169D039800C06EFD /* TOLViewController_iPhone.xib in Resources */,
+				46D9ECE6169D039800C06EFD /* TOLViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BBD758202A964B7A80C746D1 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		46D9ECBE169D039800C06EFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46D9ECD3169D039800C06EFD /* main.m in Sources */,
+				46D9ECD7169D039800C06EFD /* TOLAppDelegate.m in Sources */,
+				46D9ECE0169D039800C06EFD /* TOLViewController.m in Sources */,
+				468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		46D9ECCF169D039800C06EFD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46D9ECD0169D039800C06EFD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		46D9ECE1169D039800C06EFD /* TOLViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46D9ECE2169D039800C06EFD /* en */,
+			);
+			name = TOLViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		46D9ECE4169D039800C06EFD /* TOLViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46D9ECE5169D039800C06EFD /* en */,
+			);
+			name = TOLViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		46D9ECE7169D039800C06EFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		46D9ECE8169D039800C06EFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		46D9ECEA169D039800C06EFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F3F7CA618204A4785DEB776 /* Pods.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DeveloperAdsDemo/DeveloperAdsDemo-Prefix.pch";
+				INFOPLIST_FILE = "DeveloperAdsDemo/DeveloperAdsDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		46D9ECEB169D039800C06EFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F3F7CA618204A4785DEB776 /* Pods.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DeveloperAdsDemo/DeveloperAdsDemo-Prefix.pch";
+				INFOPLIST_FILE = "DeveloperAdsDemo/DeveloperAdsDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		46D9ECBC169D039800C06EFD /* Build configuration list for PBXProject "DeveloperAdsDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46D9ECE7169D039800C06EFD /* Debug */,
+				46D9ECE8169D039800C06EFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		46D9ECE9169D039800C06EFD /* Build configuration list for PBXNativeTarget "DeveloperAdsDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46D9ECEA169D039800C06EFD /* Debug */,
+				46D9ECEB169D039800C06EFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 46D9ECB9169D039800C06EFD /* Project object */;
+}
