@@ -27,38 +27,52 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscape = 480.f;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        CGFloat iconHeight = 40.f;
-        CGRect iconFrame = CGRectMake(5.f,
-                                      (CGRectGetHeight(frame)-iconHeight)/2,
-                                      iconHeight,
-                                      iconHeight);
-        _appIconImageView = [[UIImageView alloc] initWithFrame:iconFrame];
-        _appIconImageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+        _appIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _appIconImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
-        CGFloat appNameHeight = 30.f;
-        CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
-                                         (CGRectGetHeight(frame)-appNameHeight)/2,
-                                         CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-20.f,
-                                         appNameHeight);
-        _appNameLabel = [[UILabel alloc] initWithFrame:appNameFrame];
+        _appNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _appNameLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        _appNameLabel.backgroundColor = [UIColor clearColor];
         
         CGColorRef redColor = CGColorRetain([UIColor redColor].CGColor);
         
         _appNameLabel.layer.borderColor = redColor;
         _appNameLabel.layer.borderWidth = 1.f;
         
-        _appIconImageView.layer.borderColor = redColor;
-        _appIconImageView.layer.borderWidth = 1.f;
+        CGColorRelease(redColor);
+        
+        _appIconImageView.layer.cornerRadius = 10.f;
+        _appIconImageView.clipsToBounds = YES;
+        _appIconImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         [self addSubview:_appIconImageView];
         [self addSubview:_appNameLabel];
         
         self.backgroundColor = [UIColor greenColor];
-        
-        CGColorRelease(redColor);
     }
     return self;
+}
+
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    
+    CGRect frame = self.frame;
+    
+    CGFloat margin = 5.f;
+    CGFloat iconHeight = CGRectGetHeight(frame)-margin*2;
+    CGRect iconFrame = CGRectMake(margin,
+                                  margin,
+                                  iconHeight,
+                                  iconHeight);
+    self.appIconImageView.frame = iconFrame;
+    
+    CGFloat appNameHeight = 30.f;
+    CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
+                                     (CGRectGetHeight(frame)-appNameHeight)/2,
+                                     CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-20.f,
+                                     appNameHeight);
+    self.appNameLabel.frame = appNameFrame;
+
 }
 
 @end
