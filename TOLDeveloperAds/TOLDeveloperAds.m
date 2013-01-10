@@ -7,11 +7,13 @@
 //
 
 #import "TOLDeveloperAds.h"
+#import "LARSAdController.h"
+
 #import "AFNetworking.h"
 
 static NSString * const kTOLDevAdsBaseURL = @"https://itunes.apple.com";
 static NSString * const kTOLDevAdsLookupPath = @"lookup";
-static CGFloat kTOLDevAdsRefreshInterval = 30.f;
+static CGFloat kTOLDevAdsRefreshInterval = 5.f;
 
 /** keys for track metadata */
 static NSString * const kTOLDevAdsAppKeyArtistName = @"artistName";
@@ -22,6 +24,8 @@ static NSString * const kTOLDevAdsAppKeyFormattedPrice = @"formattedPrice";
 static NSString * const kTOLDevAdsAppKeyRatingCountForCurrentVersion = @"userRatingCountForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
 
+static NSTimeInterval const kTOLDevAdsSecondsInDay = 86400;
+
 
 @interface TOLDeveloperAds ()
 
@@ -31,6 +35,7 @@ static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
 @property (copy, nonatomic) NSDictionary *developerMeta;
 @property (nonatomic) NSInteger currentAppDisplayed;
 @property (strong, nonatomic) NSDate *metadataTimestamp;
+@property (strong, nonatomic) NSMutableIndexSet *adIndex;
 
 @end
 
@@ -42,15 +47,66 @@ static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
         NSURL *baseURL = [NSURL URLWithString:kTOLDevAdsBaseURL];
         
         _httpClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
-        [_httpClient setDefaultHeader:@"Content Type" value:@"application/json"];
         [_httpClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
+        
+        _adIndex = [NSMutableIndexSet indexSet];
     }
     return self;
 }
 
 #pragma mark - TOLDeveloperAds Specific Methods
 - (void)requestNextAdBanner{
-    [self fetchDeveloperMetadataWithSuccess:nil failure:nil];
+    if ([self secondsFromDate:self.metadataTimestamp] > kTOLDevAdsSecondsInDay) {
+        
+        typeof(self) __weak weakSelf = self;
+        
+        //refresh metadata, load into ivars
+        [self
+         fetchDeveloperMetadataWithSuccess:^(void){
+             [weakSelf requestNextAdBanner];
+         }
+         failure:^(NSError *error){
+             NSLog(@"Error: %@", error);
+         }];
+    }
+    else{
+        NSInteger index = [self.adIndex firstIndex];
+        [self loadInfoAtIndex:index];
+        
+        [self.adManager adSucceededForNetworkAdapterClass:self.class];
+    }
+}
+
+- (NSTimeInterval)secondsFromDate:(NSDate *)date{
+    if (date == nil) {
+        return NSTimeIntervalSince1970;
+    }
+    
+    NSInteger seconds = [[NSDate date] timeIntervalSinceDate:date];
+    
+    return seconds;
+}
+
+- (NSInteger)randomNumberLessThan:(NSInteger)lessThan{
+    return arc4random_uniform(lessThan);
+}
+
+- (void)loadInfoAtIndex:(NSInteger)index{
+    NSDictionary *adInfo = self.developerApps[index];
+    
+    [self.adIndex removeIndex:index];
+    
+    [self populateDevBannerWithInfo:adInfo];
+}
+
+- (void)populateDevBannerWithInfo:(NSDictionary *)adInfo{
+    
+    //TODO: make this block on image downloading (don't say ad is successfully loaded until image comes back)
+    NSString *imageURLString = adInfo[kTOLDevAdsAppKeyIconURL];
+    NSURL *imageURL = [NSURL URLWithString:imageURLString];
+    
+    [self.bannerView.appIconImageView setImageWithURL:imageURL];
+    self.bannerView.appNameLabel.text = adInfo[@"trackName"];
 }
 
 /**
@@ -74,7 +130,7 @@ static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
  https://itunes.apple.com/lookup?id=284800461&country=de&lang=de&output=json&entity=software
  
  */
-- (void)fetchDeveloperMetadataWithSuccess:(void(^)(NSDictionary *meta))successBlock
+- (void)fetchDeveloperMetadataWithSuccess:(void(^)(void))successBlock
                                   failure:(void(^)(NSError *error))failBlock{
 
     
@@ -111,34 +167,86 @@ static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
          
          NSAssert(self.developerMeta != nil, @"Artist data is still nil after fetch!");
          
-         self.developerApps = apps;
-     
          self.metadataTimestamp = [NSDate date];
+         self.developerApps = apps;
+         
+         [self refreshAdIndex];
+         
+         if (successBlock) {
+             successBlock();
+         }
      
      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         NSLog(@"error: %@", error.localizedDescription);
+         if (failBlock) {
+             failBlock(error);
+         }
      }];
 }
 
-- (NSDictionary *)developerAppsFromDictionary:(NSDictionary *)allAppObjects{
-    
+- (void)refreshAdIndex{
+    [self.adIndex removeAllIndexes];
+    [self.adIndex addIndexesInRange:NSMakeRange(0, self.developerApps.count)];
 }
 
 #pragma mark - Required Methods
 - (void)layoutBannerForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
-    //TODO: layout banner view
+    self.bannerView.frame = [self frameForOrientation:interfaceOrientation];
+}
+
+- (TOLDeveloperBannerView *)bannerView{
+    if (_bannerView == nil) {
+        CGRect frame = [self frameForCurrentOrientation];
+        _bannerView = [[TOLDeveloperBannerView alloc] initWithFrame:frame];
+    }
+    
+    return _bannerView;
+}
+
+- (CGRect)frameForCurrentOrientation{
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    return [self frameForOrientation:orientation];
+}
+
+- (CGRect)frameForOrientation:(UIInterfaceOrientation)orientation{
+    CGRect frame;
+    frame.origin = CGPointZero;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        //ipad sized
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            frame.size.height = kTOLDeveloperBannerViewPadHeightLandscape;
+            frame.size.width = kTOLDeveloperBannerViewPadWidthLandscape;
+        }
+        else{
+            frame.size.height = kTOLDeveloperBannerViewPadHeightPortrait;
+            frame.size.width = kTOLDeveloperBannerViewPadWidthPortrait;
+        }
+    }
+    else{
+        //ipod sized
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            frame.size.height = kTOLDeveloperBannerViewPodHeightLandscape;
+            frame.size.width = kTOLDeveloperBannerViewPodWidthLandscape;
+        }
+        else{
+            frame.size.height = kTOLDeveloperBannerViewPodHeightPortrait;
+            frame.size.width = kTOLDeveloperBannerViewPodWidthPortrait;
+        }
+    }
+    
+    return frame;
 }
 
 #pragma mark - Optional Methods
 - (void)startAdRequests{
     if (self.adTimer == nil) {
-        self.adTimer = [NSTimer timerWithTimeInterval:kTOLDevAdsRefreshInterval
-                                               target:self
-                                             selector:@selector(requestNextAdBanner)
-                                             userInfo:nil
-                                              repeats:YES];
+        self.adTimer = [NSTimer scheduledTimerWithTimeInterval:kTOLDevAdsRefreshInterval
+                                                        target:self
+                                                      selector:@selector(requestNextAdBanner)
+                                                      userInfo:nil
+                                                       repeats:YES];
         
-        [self requestNextAdBanner];
+//        [self requestNextAdBanner];
     }
     
     [[NSRunLoop currentRunLoop] addTimer:self.adTimer forMode:NSDefaultRunLoopMode];

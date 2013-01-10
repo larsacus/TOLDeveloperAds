@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4640F74B169E4C870008D6EB /* TOLDeveloperBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4640F74A169E4C870008D6EB /* TOLDeveloperBannerView.m */; };
 		468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */; };
 		468A4FAB169D2D17007DF9B9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 468A4FAA169D2D17007DF9B9 /* MobileCoreServices.framework */; };
 		468A4FAD169D2D1C007DF9B9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 468A4FAC169D2D1C007DF9B9 /* SystemConfiguration.framework */; };
@@ -26,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4640F749169E4C870008D6EB /* TOLDeveloperBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOLDeveloperBannerView.h; sourceTree = "<group>"; };
+		4640F74A169E4C870008D6EB /* TOLDeveloperBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOLDeveloperBannerView.m; sourceTree = "<group>"; };
 		468A4E8F169D047C007DF9B9 /* TOLDeveloperAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOLDeveloperAds.h; sourceTree = "<group>"; };
 		468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOLDeveloperAds.m; sourceTree = "<group>"; };
 		468A4FA8169D256D007DF9B9 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
@@ -74,6 +77,8 @@
 			children = (
 				468A4E8F169D047C007DF9B9 /* TOLDeveloperAds.h */,
 				468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */,
+				4640F749169E4C870008D6EB /* TOLDeveloperBannerView.h */,
+				4640F74A169E4C870008D6EB /* TOLDeveloperBannerView.m */,
 			);
 			name = TOLDeveloperAds;
 			path = ../TOLDeveloperAds;
@@ -230,6 +235,7 @@
 				46D9ECD7169D039800C06EFD /* TOLAppDelegate.m in Sources */,
 				46D9ECE0169D039800C06EFD /* TOLViewController.m in Sources */,
 				468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */,
+				4640F74B169E4C870008D6EB /* TOLDeveloperBannerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

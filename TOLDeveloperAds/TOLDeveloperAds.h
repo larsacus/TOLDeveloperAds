@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "TOLAdAdapter.h"
+#import "TOLDeveloperBannerView.h"
 
 @interface TOLDeveloperAds : NSObject <TOLAdAdapter>
 
-@property (strong, nonatomic) UIView *bannerView;
+@property (strong, nonatomic) TOLDeveloperBannerView *bannerView;
 @property (nonatomic) BOOL adVisible;
 @property (weak, nonatomic) id <LARSAdControllerDelegate> adManager;
 @property (copy, nonatomic) NSString *publisherId;

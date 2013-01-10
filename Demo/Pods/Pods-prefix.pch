@@ -2,6 +2,8 @@
 #import <UIKit/UIKit.h>
 #endif
 
+#define LARSADCONTROLLER_DEBUG
+
 #ifdef __OBJC__
 #import <Availability.h>
 #if __IPHONE_OS_VERSION_MIN_REQUIRED
