@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>ColorArt 0.0.6 Reference</title>
+		<link rel="stylesheet" type="text/css" href="css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 858)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="index.html">ColorArt 0.0.6 </a></h1>
+				<a id="developerHome" href="index.html">Aaron Brethorst, Fred Leitz, and Wade Cosgrove</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">ColorArt 0.0.6 Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar"></ul>
+		</header>
+		<article>
+			<div id="overview_contents" role="main">
+				<div class="main-navigation navigation-top">
+					<a href="hierarchy.html">Next</a>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">ColorArt 0.0.6 Reference</h1>
+					</div>		
+				</div>
+				<div id="container">
+					
+					<div class="section section-overview index-overview">
+						
+						
+						<h1>iTunes 11 Style Color Art Detection for iOS.</h1>
+
+<p>Port of ColorArt code from OS X to iOS.</p>
+
+<p>!<a href="https://raw.github.com/fleitz/ColorArt/master/screenshot.png">Screenshot</a></p>
+
+<h1>Usage</h1>
+
+<p>```   objective-c
+UIImage <em>image = [UIImage imageNamed:@&ldquo;DSC_0062.jpg&rdquo;];
+<a href="Classes/SLColorArt.html">SLColorArt</a> </em>colorArt = [[SLColorArt alloc] initWithImage:image scaledSize: self.fadedImageView.frame.size];</p>
+
+<p>self.view.backgroundColor = colorArt.backgroundColor;
+self.fadedImageView.backgroundColor = colorArt.backgroundColor;</p>
+
+<p>self.fadedImageView.image = colorArt.scaledImage;
+self.headline.textColor = colorArt.primaryColor;
+self.subHeadline.textColor = colorArt.secondaryColor;
+self.text.textColor = colorArt.detailColor;
+```</p>
+
+<h1>So, what&rsquo;s the story?</h1>
+
+<p>This morning, I saw a neat post on Panic&rsquo;s blog (<a href="http://www.panic.com/blog/2012/12/itunes-11-and-colors/">http://www.panic.com/blog/2012/12/itunes-11-and-colors/)</a>) that showed an example of how to duplicate iTunes 11&rsquo;s cover art color matching algorithm. I thought it&rsquo;d be worthwhile to make the code a bit more reusable, and&hellip;here we are!</p>
+
+<p>I  — Aaron Brethorst / <a href="http://www.cocoacontrols.com">http://www.cocoacontrols.com</a> — have extracted all of the interesting code into a reusable class whose usage should be fairly self-explanatory. Let me know if you have any questions.</p>
+
+<p>!<a href="https://raw.github.com/aaronbrethorst/ColorArt/master/screenshot.png">Screenshot</a></p>
+
+<h1>License</h1>
+
+<pre><code>Copyright (C) 2012 Panic Inc. Code by Wade Cosgrove. All rights reserved.
+
+Redistribution and use, with or without modification, are permitted
+provided that the following conditions are met:
+
+- Redistributions must reproduce the above copyright notice, this list of
+  conditions and the following disclaimer in the documentation and/or
+  other materials provided with the distribution.
+
+- Neither the name of Panic Inc nor the names of its contributors may be
+  used to endorse or promote works derived from this software without
+  specific prior written permission from Panic Inc.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL PANIC INC BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+</code></pre>
+
+<h1>MIT License</h1>
+
+<p>Portions copyright &copy; 2012 Fred Leitz</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &ldquo;Software&rdquo;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED &ldquo;AS IS&rdquo;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+						
+						
+					</div>
+					
+					
+					
+					<div class="index-column">
+						<h2 class="index-title">Class References</h2>
+						<ul>
+							
+							<li><a href="Classes/SLColorArt.html">SLColorArt</a></li>
+							
+						</ul>
+					</div>
+					
+					
+						
+					<div class="index-column">
+						
+						
+						<h2 class="index-title">Category References</h2>
+						<ul>
+							
+							<li><a href="Categories/UIImage+Scale.html">UIImage(Scale)</a></li>
+							
+						</ul>
+						
+					</div>
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<a href="hierarchy.html">Next</a>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 Aaron Brethorst, Fred Leitz, and Wade Cosgrove. All rights reserved. (Last updated: 2013-01-14)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
+						
+	
+					</div>
+				</div>
+			</div>
+		</article>		
+	</body>
+</html>

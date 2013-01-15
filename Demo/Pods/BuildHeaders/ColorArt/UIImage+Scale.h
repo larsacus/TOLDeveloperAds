@@ -1,0 +1,1 @@
+../../ColorArt/ColorArt/Classes/UIImage+Scale.h

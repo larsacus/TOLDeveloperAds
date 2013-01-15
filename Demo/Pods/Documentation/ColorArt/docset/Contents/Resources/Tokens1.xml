@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/SLColorArt.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/SLColorArt</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>
+			
+			<NodeRef refid="1"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/SLColorArt/setBackgroundColor:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *backgroundColor</Declaration>
+			
+			
+			<Anchor>//api/name/backgroundColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/SLColorArt/backgroundColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *backgroundColor</Declaration>
+			
+			
+			<Anchor>//api/name/backgroundColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/SLColorArt/setPrimaryColor:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *primaryColor</Declaration>
+			
+			
+			<Anchor>//api/name/primaryColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/SLColorArt/primaryColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *primaryColor</Declaration>
+			
+			
+			<Anchor>//api/name/primaryColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/SLColorArt/setSecondaryColor:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *secondaryColor</Declaration>
+			
+			
+			<Anchor>//api/name/secondaryColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/SLColorArt/secondaryColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *secondaryColor</Declaration>
+			
+			
+			<Anchor>//api/name/secondaryColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/SLColorArt/setDetailColor:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *detailColor</Declaration>
+			
+			
+			<Anchor>//api/name/detailColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/SLColorArt/detailColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (strong, nonatomic, readonly) UIColor *detailColor</Declaration>
+			
+			
+			<Anchor>//api/name/detailColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/SLColorArt/setScaledImage:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) UIImage *scaledImage</Declaration>
+			
+			
+			<Anchor>//api/name/scaledImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/SLColorArt/scaledImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) UIImage *scaledImage</Declaration>
+			
+			
+			<Anchor>//api/name/scaledImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/SLColorArt/initWithImage:scaledSize:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>SLColorArt.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithImage:(UIImage *)image scaledSize:(CGSize)size</Declaration>
+			
+			
+			<Anchor>//api/name/initWithImage:scaledSize:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

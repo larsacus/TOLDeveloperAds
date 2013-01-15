@@ -1,0 +1,4 @@
+Documentation set was installed to Xcode!
+
+Path: /Users/lars/Library/Developer/Shared/Documentation/DocSets/org.cocoapods.ColorArt-0.0.6.docset
+Time: 2013-01-15 03:11:31 +0000

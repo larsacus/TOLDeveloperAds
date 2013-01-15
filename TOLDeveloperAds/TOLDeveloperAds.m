@@ -11,7 +11,7 @@
 #import "TOLDeveloperAds.h"
 #import "LARSAdController.h"
 
-#import "AFNetworking.h"
+#import "SLColorArt.h"
 
 static NSString * const kTOLDevAdsBaseURL = @"https://itunes.apple.com";
 static NSString * const kTOLDevAdsLookupPath = @"lookup";
@@ -27,17 +27,20 @@ static NSString * const kTOLDevAdsAppKeyFormattedPrice = @"formattedPrice";
 static NSString * const kTOLDevAdsAppKeyRatingCountForCurrentVersion = @"userRatingCountForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
 static NSString * const kTOLDevAdsAppKeyName = @"trackName";
+static NSString * const kTOLDevAdsResponseKeyResults = @"results";
+static NSString * const kTOLDevAdsWrapperKeyWrapperType = @"wrapperType";
+static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
 
-@interface TOLDeveloperAds ()
+@interface TOLDeveloperAds () <NSURLConnectionDataDelegate>
 
 @property (nonatomic, strong) NSTimer *adTimer;
-@property (nonatomic, strong) AFHTTPClient *httpClient;
 @property (nonatomic, strong) NSArray *developerApps;
 @property (nonatomic, copy) NSDictionary *developerMeta;
 @property (nonatomic) NSInteger currentAdIndex;
 @property (nonatomic, strong) NSDate *metadataTimestamp;
 @property (nonatomic, strong) NSMutableIndexSet *adIndex;
 @property (nonatomic, readwrite) BOOL adLoaded;
+@property (nonatomic, getter = isAdLoading) BOOL adLoading;
 
 @end
 
@@ -46,11 +49,6 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
 - (instancetype)init{
     self = [super init];
     if (self) {
-        NSURL *baseURL = [NSURL URLWithString:kTOLDevAdsBaseURL];
-        
-        _httpClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
-        [_httpClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
-        
         _adIndex = [NSMutableIndexSet indexSet];
     }
     return self;
@@ -58,50 +56,52 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
 
 #pragma mark - TOLDeveloperAds Specific Methods
 - (void)requestNextAdBanner{
-    if ([self secondsFromDate:self.metadataTimestamp] > kTOLDevAdsSecondsInDay) {
-        typeof(self) __weak weakSelf = self;
-        
-        //refresh metadata, load into ivars
-        [self
-         fetchDeveloperMetadataWithSuccess:^(void){
-             [weakSelf requestNextAdBanner];
-         }
-         failure:^(NSError *error){
-             TOLWLog(@"Error fetching dev metadata: %@", error);
-             typeof(self) blockSelf = self;
-             
-             blockSelf.adLoaded = NO;
-             [blockSelf.adManager adFailedForNetworkAdapterClass:self.class];
-         }];
-    }
-    else if(self.developerApps.count > 0){
-        
-        NSInteger index = 0;
-        if (self.developerApps.count > 1) {
-            //Only transition if there is more than a single app - no need otherwise
-            index = [self.adIndex firstIndex];
+    if (self.isAdLoading == NO) {
+        if ([self secondsFromDate:self.metadataTimestamp] > kTOLDevAdsSecondsInDay) {
+            typeof(self) __weak weakSelf = self;
+            //refresh metadata, load into ivars
             
-            if (index == NSNotFound) {
-                [self refreshAdIndex];
-                
+            [self
+             fetchDeveloperMetadataWithSuccess:^(void){
+                 [weakSelf requestNextAdBanner];
+             }
+             failure:^(NSError *error){
+                 TOLWLog(@"Error fetching dev metadata: %@", error);
+                 typeof(self) blockSelf = self;
+                 
+                 blockSelf.adLoading = NO;
+                 blockSelf.adLoaded = NO;
+                 
+                 [blockSelf.adManager adFailedForNetworkAdapterClass:self.class];
+             }];
+        }
+        else if(self.developerApps.count > 0){
+            self.adLoading = YES;
+            
+            NSInteger index = 0;
+            if (self.developerApps.count > 1) {
+                //Only transition if there is more than a single app - no need otherwise
                 index = [self.adIndex firstIndex];
-            }
-            
-            if (self.adLoaded) {
-                CATransition *transition = [CATransition animation];
-                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-                transition.type = kCATransitionReveal;
-                transition.subtype = kCATransitionFromBottom;
                 
-                [self.bannerView.layer addAnimation:transition forKey:@"inventory-transition"];
+                if (index == NSNotFound) {
+                    [self refreshAdIndex];
+                    
+                    index = [self.adIndex firstIndex];
+                }
+                
+                [self loadInfoAtIndex:index completion:^{
+                    CATransition *transition = [CATransition animation];
+                    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                    transition.type = kCATransitionReveal;
+                    transition.subtype = kCATransitionFromBottom;
+                    
+                    [self.bannerView.layer addAnimation:transition forKey:@"inventory-transition"];
+                }];
             }
         }
-    
-        [self loadInfoAtIndex:index];
-        [self.adManager adSucceededForNetworkAdapterClass:self.class];
-    }
-    else{
-        [self.adManager adFailedForNetworkAdapterClass:self.class];
+        else{
+            [self.adManager adFailedForNetworkAdapterClass:self.class];
+        }
     }
 }
 
@@ -156,24 +156,63 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
 }
 
 #pragma mark - Inventory
-- (void)loadInfoAtIndex:(NSInteger)index{
+- (void)loadInfoAtIndex:(NSInteger)index completion:(void(^)(void))completionBlock{
     NSDictionary *adInfo = self.developerApps[index];
     
     [self.adIndex removeIndex:index];
     self.currentAdIndex = index;
     
-    [self populateDevBannerWithInfo:adInfo];
-    self.adLoaded = YES;
+    [self populateBannerWithInfo:adInfo completion:completionBlock];
 }
 
-- (void)populateDevBannerWithInfo:(NSDictionary *)adInfo{
+- (void)populateBannerWithInfo:(NSDictionary *)adInfo completion:(void(^)(void))completionBlock{
     
-    //TODO: make this block on image downloading (don't say ad is successfully loaded until image comes back)
     NSString *imageURLString = adInfo[kTOLDevAdsAppKeyIconURL];
-    NSURL *imageURL = [NSURL URLWithString:imageURLString];
     
-    [self.bannerView.appIconImageView setImageWithURL:imageURL];
-    self.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
+    typeof(self) __weak weakSelf = self;
+
+    [self
+     fetchImageWithPath:imageURLString
+     completion:^(UIImage *image) {
+         typeof(weakSelf) blockSelf = weakSelf;
+         
+         CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
+         
+         SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
+                                                       scaledSize:imageSize];
+         
+         blockSelf.bannerView.appIconImageView.image = colorArt.scaledImage;
+         blockSelf.bannerView.backgroundColor = colorArt.primaryColor;
+         
+         CGColorRef backgroundColor = CGColorRetain(colorArt.backgroundColor.CGColor);
+         blockSelf.bannerView.layer.borderColor = backgroundColor;
+         CGColorRelease(backgroundColor);
+         
+         blockSelf.bannerView.layer.borderWidth = 5.f;
+         
+         blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
+         blockSelf.bannerView.appNameLabel.textColor = colorArt.secondaryColor;
+         blockSelf.bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
+         
+         CGFloat scale = [[UIScreen mainScreen] scale];
+         blockSelf.bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
+         
+         blockSelf.adLoaded = YES;
+         blockSelf.adLoading = NO;
+         
+         [blockSelf.adManager adSucceededForNetworkAdapterClass:blockSelf.class];
+         
+         if(completionBlock){
+             completionBlock();
+         }
+     } failBlock:^(NSError *error) {
+         NSLog(@"Error fetching image: %@", error.localizedDescription);
+         typeof(weakSelf) blockSelf = weakSelf;
+         
+         blockSelf.adLoading = NO;
+         
+         [blockSelf.adManager adFailedForNetworkAdapterClass:blockSelf.class];
+     }];
 }
 
 /**
@@ -198,10 +237,10 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
  */
 - (void)fetchDeveloperMetadataWithSuccess:(void(^)(void))successBlock
                                   failure:(void(^)(NSError *error))failBlock{
-    
     NSLocale *currentLocale = [NSLocale currentLocale];  // get the current locale.
     NSString *countryCode = [currentLocale objectForKey:NSLocaleCountryCode];
     NSString *languageCode = [currentLocale objectForKey:NSLocaleLanguageCode];
+    NSURL *baseURL = [NSURL URLWithString:kTOLDevAdsBaseURL];
     
     NSDictionary *params = @{
         @"id" : self.publisherId,
@@ -210,21 +249,56 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
         @"country": countryCode
     };
     
-    [self.httpClient
-     getPath:kTOLDevAdsLookupPath
-     parameters:params
-     success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         NSError *error = nil;
-         NSDictionary *data = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:&error];
+    NSString *paramsString = [self urlEncodedParamsForDictionary:params];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@%@", kTOLDevAdsLookupPath, paramsString];
+    NSURL *url = [NSURL URLWithString:urlString relativeToURL:baseURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+   
+    NSMutableDictionary *headerFields = [request.allHTTPHeaderFields mutableCopy];
+    
+    if (headerFields == nil) {
+        headerFields = [NSMutableDictionary dictionary];
+    }
+    
+    [headerFields setObject:@"application/json" forKey:@"content-type"];
+    
+    [request setAllHTTPHeaderFields:headerFields];
+    
+    [NSURLConnection
+     sendAsynchronousRequest:request
+     queue:[NSOperationQueue mainQueue]
+     completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+         if (error != nil){
+             if(failBlock != nil) {
+                 //Something bad happened during fetch - bail and report
+                 failBlock(error);
+             }
+             return;
+         }
          
-         NSArray *objects = data[@"results"];
+         NSError *jsonReadingError = nil;
+         NSDictionary *metadata = [NSJSONSerialization
+                                   JSONObjectWithData:data
+                                   options:NSJSONReadingAllowFragments
+                                   error:&jsonReadingError];
+         
+         if ((jsonReadingError != nil)) {
+             if ((failBlock != nil)) {
+                 //something else bad happened during parse - bail and report
+                 failBlock(jsonReadingError);
+             }
+             return;
+         }
+         
+         NSArray *objects = metadata[kTOLDevAdsResponseKeyResults];
          NSMutableArray *apps = [NSMutableArray array];
          
          //artist should be first, but just in case
          for (NSDictionary *object in objects) {
              NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
              
-             if ([object[@"wrapperType"] isEqualToString:@"artist"]) {
+             if ([object[kTOLDevAdsWrapperKeyWrapperType] isEqualToString:kTOLDevAdsWrapperTypeValueArtist]) {
                  self.developerMeta = object;
              }
              else if([object[kTOLDevAdsAppKeyBundleId] isEqualToString:bundleIdentifier] == NO){
@@ -242,10 +316,81 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
          if (successBlock) {
              successBlock();
          }
-     
-     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         if (failBlock) {
-             failBlock(error);
+     }];
+}
+
+- (void)fetchImageWithPath:(NSString *)imagePath
+                completion:(void(^)(UIImage *image))successBlock
+                 failBlock:(void(^)(NSError *error))failBlock{
+    NSURL *url = [NSURL URLWithString:imagePath];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSString *last = [imagePath lastPathComponent];
+    last = [last componentsSeparatedByString:@"?"][0];
+    NSString *fileExtension = [[last componentsSeparatedByString:@"."] lastObject];
+    
+    NSMutableDictionary *headerFields = [request.allHTTPHeaderFields mutableCopy];
+    
+    if (headerFields == nil) {
+        headerFields = [NSMutableDictionary dictionary];
+    }
+    
+    NSString *contentType = [NSString stringWithFormat:@"image/%@", fileExtension];
+    [headerFields setObject:contentType forKey:@"content-type"];
+    
+    [request setAllHTTPHeaderFields:headerFields];
+    
+    NSOperationQueue *imageQueue = [[NSOperationQueue alloc] init];
+    imageQueue.name = @"com.theonlylars.imagequeue";
+    
+    [NSURLConnection
+     sendAsynchronousRequest:request
+     queue:imageQueue
+     completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+         
+         if (error != nil) {
+             if (failBlock != nil) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     failBlock(error);
+                 });
+             }
+             return;
+         }
+         
+         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+             NSUInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+             NSRange successRange = NSMakeRange(200, 99);
+             NSIndexSet *successSet = [NSIndexSet indexSetWithIndexesInRange:successRange];
+             
+             if ((error != nil) ||
+                 ([successSet containsIndex:statusCode] == NO)) {
+                 if (failBlock) {
+                     if (error == nil) {
+                         NSString *errorDescriptionString = [NSString stringWithFormat:@"Image fetch returned a non-successful status code (%i) for image path: %@", statusCode, response.URL.absoluteString];
+                         NSDictionary *userInfo = @{
+                             NSLocalizedDescriptionKey : errorDescriptionString
+                         };
+                         
+                         error = [NSError errorWithDomain:@"com.theonlylars.DevAds"
+                                                     code:statusCode
+                                                 userInfo:userInfo];
+                     }
+                     
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         failBlock(error);
+                     });
+                 }
+                 return;
+             }
+             
+             //should have a successful image fetch here
+             UIImage *image = [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
+             
+             if (successBlock) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     successBlock(image);
+                 });
+             }
          }
      }];
 }
@@ -253,6 +398,25 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
 - (void)refreshAdIndex{
     [self.adIndex removeAllIndexes];
     [self.adIndex addIndexesInRange:NSMakeRange(0, self.developerApps.count)];
+}
+
+#pragma mark - HTTP Helpers
+- (NSString *)urlEncodedParamsForDictionary:(NSDictionary *)params{
+    NSMutableString *paramsString = [NSMutableString stringWithString:@"?"];
+    NSArray *allKeys = [params allKeys];
+    
+    for (NSString *key in allKeys) {
+        id value = [params objectForKey:key];
+        NSString *newParam = [NSString stringWithFormat:@"%@=%@",key,value];
+        [paramsString appendString:newParam];
+        
+        if (([allKeys indexOfObject:key] != allKeys.count-1)) {
+            //not last key, append '&'
+            [paramsString appendString:@"&"];
+        }
+    }
+    
+    return paramsString;
 }
 
 #pragma mark - Required TOLAdAdapter Methods
@@ -319,7 +483,6 @@ static NSString * const kTOLDevAdsAppKeyName = @"trackName";
     [self.adIndex removeAllIndexes], self.adIndex = nil;
     self.developerMeta = nil;
     self.metadataTimestamp = nil;
-    self.httpClient = nil;
 }
 
 @end

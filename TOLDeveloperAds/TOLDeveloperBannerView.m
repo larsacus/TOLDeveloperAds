@@ -34,14 +34,14 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscape = 480.f;
         _appNameLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
         _appNameLabel.backgroundColor = [UIColor clearColor];
         
-        CGColorRef redColor = CGColorRetain([UIColor redColor].CGColor);
+//        CGColorRef redColor = CGColorRetain([UIColor redColor].CGColor);
+//        
+//        _appNameLabel.layer.borderColor = redColor;
+//        _appNameLabel.layer.borderWidth = 1.f;
+//        
+//        CGColorRelease(redColor);
         
-        _appNameLabel.layer.borderColor = redColor;
-        _appNameLabel.layer.borderWidth = 1.f;
-        
-        CGColorRelease(redColor);
-        
-        _appIconImageView.layer.cornerRadius = 10.f;
+        _appIconImageView.layer.cornerRadius = 5.f;
         _appIconImageView.clipsToBounds = YES;
         _appIconImageView.contentMode = UIViewContentModeScaleAspectFit;
         
