@@ -10,8 +10,6 @@
 		4640F74B169E4C870008D6EB /* TOLDeveloperBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4640F74A169E4C870008D6EB /* TOLDeveloperBannerView.m */; };
 		4640F74E169E7F260008D6EB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4640F74D169E7F260008D6EB /* QuartzCore.framework */; };
 		468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */; };
-		468A4FAB169D2D17007DF9B9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 468A4FAA169D2D17007DF9B9 /* MobileCoreServices.framework */; };
-		468A4FAD169D2D1C007DF9B9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 468A4FAC169D2D1C007DF9B9 /* SystemConfiguration.framework */; };
 		46D9ECC7169D039800C06EFD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC6169D039800C06EFD /* UIKit.framework */; };
 		46D9ECC9169D039800C06EFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC8169D039800C06EFD /* Foundation.framework */; };
 		46D9ECCB169D039800C06EFD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECCA169D039800C06EFD /* CoreGraphics.framework */; };
@@ -34,8 +32,6 @@
 		468A4E8F169D047C007DF9B9 /* TOLDeveloperAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOLDeveloperAds.h; sourceTree = "<group>"; };
 		468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOLDeveloperAds.m; sourceTree = "<group>"; };
 		468A4FA8169D256D007DF9B9 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
-		468A4FAA169D2D17007DF9B9 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		468A4FAC169D2D1C007DF9B9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		46D9ECC2169D039800C06EFD /* DeveloperAdsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeveloperAdsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D9ECC6169D039800C06EFD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		46D9ECC8169D039800C06EFD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -63,8 +59,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4640F74E169E7F260008D6EB /* QuartzCore.framework in Frameworks */,
-				468A4FAD169D2D1C007DF9B9 /* SystemConfiguration.framework in Frameworks */,
-				468A4FAB169D2D17007DF9B9 /* MobileCoreServices.framework in Frameworks */,
 				46D9ECC7169D039800C06EFD /* UIKit.framework in Frameworks */,
 				46D9ECC9169D039800C06EFD /* Foundation.framework in Frameworks */,
 				46D9ECCB169D039800C06EFD /* CoreGraphics.framework in Frameworks */,
@@ -111,8 +105,6 @@
 		46D9ECC5169D039800C06EFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				468A4FAA169D2D17007DF9B9 /* MobileCoreServices.framework */,
-				468A4FAC169D2D1C007DF9B9 /* SystemConfiguration.framework */,
 				46D9ECC6169D039800C06EFD /* UIKit.framework */,
 				46D9ECC8169D039800C06EFD /* Foundation.framework */,
 				46D9ECCA169D039800C06EFD /* CoreGraphics.framework */,

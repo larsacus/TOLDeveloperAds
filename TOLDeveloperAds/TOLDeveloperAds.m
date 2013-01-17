@@ -20,16 +20,21 @@ static NSTimeInterval const kTOLDevAdsSecondsInDay = 86400;
 
 /** keys for track metadata */
 static NSString * const kTOLDevAdsAppKeyArtistName = @"artistName";
-static NSString * const kTOLDevAdsAppKeyIconURL = @"artworkUrl100";
+static NSString * const kTOLDevAdsAppKeyIconURL = @"artworkUrl100"; //options are 60, 100, 512
 static NSString * const kTOLDevAdsAppKeyAverageRatingCurrentVersion = @"averageUserRatingForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyBundleId = @"bundleId";
 static NSString * const kTOLDevAdsAppKeyFormattedPrice = @"formattedPrice";
 static NSString * const kTOLDevAdsAppKeyRatingCountForCurrentVersion = @"userRatingCountForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
 static NSString * const kTOLDevAdsAppKeyName = @"trackName";
+static NSString * const kTOLDevAdsAppKeyKind = @"kind";
+
 static NSString * const kTOLDevAdsResponseKeyResults = @"results";
 static NSString * const kTOLDevAdsWrapperKeyWrapperType = @"wrapperType";
 static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
+
+static NSString * const kTOLDevAdsAppKindMacSoftware = @"mac-software";
+static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 @interface TOLDeveloperAds () <NSURLConnectionDataDelegate>
 
@@ -67,12 +72,12 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
              }
              failure:^(NSError *error){
                  TOLWLog(@"Error fetching dev metadata: %@", error);
-                 typeof(self) blockSelf = self;
+                 typeof(weakSelf) blockSelf = weakSelf;
                  
                  blockSelf.adLoading = NO;
                  blockSelf.adLoaded = NO;
                  
-                 [blockSelf.adManager adFailedForNetworkAdapterClass:self.class];
+                 [blockSelf.adManager adFailedForNetworkAdapterClass:blockSelf.class];
              }];
         }
         else if(self.developerApps.count > 0){
@@ -120,6 +125,24 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
     return arc4random_uniform(lessThan);
 }
 
+- (void)applyColorsFromSLColors:(SLColorArt *)colorArt toBannerView:(TOLDeveloperBannerView *)bannerView{
+    bannerView.appIconImageView.image = colorArt.scaledImage;
+    bannerView.backgroundColor = colorArt.primaryColor;
+    
+    CGColorRef backgroundColor = CGColorRetain(colorArt.backgroundColor.CGColor);
+    bannerView.layer.borderColor = backgroundColor;
+    CGColorRelease(backgroundColor);
+    
+    bannerView.layer.borderWidth = 5.f;
+    
+    bannerView.appNameLabel.textColor = colorArt.secondaryColor;
+    bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
+    
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
+}
+
+#pragma mark - Frame
 - (CGRect)frameForCurrentOrientation{
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     return [self frameForOrientation:orientation];
@@ -174,7 +197,10 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
     [self
      fetchImageWithPath:imageURLString
      completion:^(UIImage *image) {
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+         dispatch_queue_t image_processing_queue = dispatch_queue_create("com.theonlylars.image-processing", 0);
+         dispatch_set_target_queue(image_processing_queue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
+         
+         dispatch_async(image_processing_queue, ^{
              typeof(weakSelf) blockSelf = weakSelf;
              
              CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
@@ -183,21 +209,9 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
                                                            scaledSize:imageSize];
              
              dispatch_sync(dispatch_get_main_queue(), ^{
-                 blockSelf.bannerView.appIconImageView.image = colorArt.scaledImage;
-                 blockSelf.bannerView.backgroundColor = colorArt.primaryColor;
-                 
-                 CGColorRef backgroundColor = CGColorRetain(colorArt.backgroundColor.CGColor);
-                 blockSelf.bannerView.layer.borderColor = backgroundColor;
-                 CGColorRelease(backgroundColor);
-                 
-                 blockSelf.bannerView.layer.borderWidth = 5.f;
-                 
                  blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
-                 blockSelf.bannerView.appNameLabel.textColor = colorArt.secondaryColor;
-                 blockSelf.bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
                  
-                 CGFloat scale = [[UIScreen mainScreen] scale];
-                 blockSelf.bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
+                 [blockSelf applyColorsFromSLColors:colorArt toBannerView:blockSelf.bannerView];
                  
                  blockSelf.adLoaded = YES;
                  blockSelf.adLoading = NO;
@@ -209,6 +223,8 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
                  }
              });
          });
+         
+//         dispatch_release(image_processing_queue);
      } failBlock:^(NSError *error) {
          NSLog(@"Error fetching image: %@", error.localizedDescription);
          typeof(weakSelf) blockSelf = weakSelf;
@@ -297,16 +313,27 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
          
          NSArray *objects = metadata[kTOLDevAdsResponseKeyResults];
          NSMutableArray *apps = [NSMutableArray array];
+         NSString *currentBundleID = [[NSBundle mainBundle] bundleIdentifier];
          
          //artist should be first, but just in case
          for (NSDictionary *object in objects) {
-             NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+             NSString *objectBundleId = object[kTOLDevAdsAppKeyBundleId];
+             NSString *objectKind = object[kTOLDevAdsAppKeyKind];
+             NSString *wrapperType = object[kTOLDevAdsWrapperKeyWrapperType];
              
-             if ([object[kTOLDevAdsWrapperKeyWrapperType] isEqualToString:kTOLDevAdsWrapperTypeValueArtist]) {
+             BOOL isMacSoftware = [objectKind isEqualToString:kTOLDevAdsAppKindMacSoftware];
+             BOOL isCurrentApp = [objectBundleId isEqualToString:currentBundleID];
+             BOOL isArtist = [wrapperType isEqualToString:kTOLDevAdsWrapperTypeValueArtist];
+             
+             if (isArtist) {
                  self.developerMeta = object;
              }
-             else if([object[kTOLDevAdsAppKeyBundleId] isEqualToString:bundleIdentifier] == NO){
+             else if((isCurrentApp == NO) &&
+                     (isMacSoftware == NO)){
                  [apps addObject:object];
+             }
+             else if(isMacSoftware){
+                 NSLog(@"Skipping mac app with bundle ID %@", objectBundleId);
              }
          }
          

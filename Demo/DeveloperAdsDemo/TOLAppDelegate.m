@@ -16,7 +16,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[LARSAdController sharedManager] registerAdClass:[TOLDeveloperAds class] withPublisherId:@"284800461"];//284800461 is EA's dev id
+    //Tapbots: 293642940
+    //Electronic Arts: 284800461
+    [[LARSAdController sharedManager] registerAdClass:[TOLDeveloperAds class] withPublisherId:@"293642940"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
