@@ -174,37 +174,41 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
     [self
      fetchImageWithPath:imageURLString
      completion:^(UIImage *image) {
-         typeof(weakSelf) blockSelf = weakSelf;
-         
-         CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
-         
-         SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
-                                                       scaledSize:imageSize];
-         
-         blockSelf.bannerView.appIconImageView.image = colorArt.scaledImage;
-         blockSelf.bannerView.backgroundColor = colorArt.primaryColor;
-         
-         CGColorRef backgroundColor = CGColorRetain(colorArt.backgroundColor.CGColor);
-         blockSelf.bannerView.layer.borderColor = backgroundColor;
-         CGColorRelease(backgroundColor);
-         
-         blockSelf.bannerView.layer.borderWidth = 5.f;
-         
-         blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
-         blockSelf.bannerView.appNameLabel.textColor = colorArt.secondaryColor;
-         blockSelf.bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
-         
-         CGFloat scale = [[UIScreen mainScreen] scale];
-         blockSelf.bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
-         
-         blockSelf.adLoaded = YES;
-         blockSelf.adLoading = NO;
-         
-         [blockSelf.adManager adSucceededForNetworkAdapterClass:blockSelf.class];
-         
-         if(completionBlock){
-             completionBlock();
-         }
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+             typeof(weakSelf) blockSelf = weakSelf;
+             
+             CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
+             
+             SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
+                                                           scaledSize:imageSize];
+             
+             dispatch_sync(dispatch_get_main_queue(), ^{
+                 blockSelf.bannerView.appIconImageView.image = colorArt.scaledImage;
+                 blockSelf.bannerView.backgroundColor = colorArt.primaryColor;
+                 
+                 CGColorRef backgroundColor = CGColorRetain(colorArt.backgroundColor.CGColor);
+                 blockSelf.bannerView.layer.borderColor = backgroundColor;
+                 CGColorRelease(backgroundColor);
+                 
+                 blockSelf.bannerView.layer.borderWidth = 5.f;
+                 
+                 blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
+                 blockSelf.bannerView.appNameLabel.textColor = colorArt.secondaryColor;
+                 blockSelf.bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
+                 
+                 CGFloat scale = [[UIScreen mainScreen] scale];
+                 blockSelf.bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
+                 
+                 blockSelf.adLoaded = YES;
+                 blockSelf.adLoading = NO;
+                 
+                 [blockSelf.adManager adSucceededForNetworkAdapterClass:blockSelf.class];
+                 
+                 if(completionBlock){
+                     completionBlock();
+                 }
+             });
+         });
      } failBlock:^(NSError *error) {
          NSLog(@"Error fetching image: %@", error.localizedDescription);
          typeof(weakSelf) blockSelf = weakSelf;
