@@ -20,6 +20,7 @@ CGFloat const kTOLDeveloperBannerViewPadHeightLandscape = 50.f;
 CGFloat const kTOLDeveloperBannerViewPodHeightLandscape = 35.f;
 CGFloat const kTOLDeveloperBannerViewPadWidthLandscape = 1024.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthLandscape = 480.f;
+CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 
 @implementation TOLDeveloperBannerView
 

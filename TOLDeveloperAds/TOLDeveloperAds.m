@@ -12,6 +12,7 @@
 #import "LARSAdController.h"
 
 #import "SLColorArt.h"
+#import "LEColorPicker.h"
 
 static NSString * const kTOLDevAdsBaseURL = @"https://itunes.apple.com";
 static NSString * const kTOLDevAdsLookupPath = @"lookup";
@@ -20,7 +21,7 @@ static NSTimeInterval const kTOLDevAdsSecondsInDay = 86400;
 
 /** keys for track metadata */
 static NSString * const kTOLDevAdsAppKeyArtistName = @"artistName";
-static NSString * const kTOLDevAdsAppKeyIconURL = @"artworkUrl100"; //options are 60, 100, 512
+static NSString * const kTOLDevAdsAppKeyIconURL = @"artworkUrl512"; //options are 60, 100, 512
 static NSString * const kTOLDevAdsAppKeyAverageRatingCurrentVersion = @"averageUserRatingForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyBundleId = @"bundleId";
 static NSString * const kTOLDevAdsAppKeyFormattedPrice = @"formattedPrice";
@@ -35,6 +36,8 @@ static NSString * const kTOLDevAdsWrapperTypeValueArtist = @"artist";
 
 static NSString * const kTOLDevAdsAppKindMacSoftware = @"mac-software";
 static NSString * const kTOLDevAdsAppKindSoftware = @"software";
+
+#define isGiraffeScreen ([[UIScreen mainScreen] bounds].size.height == 568.f)
 
 @interface TOLDeveloperAds () <NSURLConnectionDataDelegate>
 
@@ -142,6 +145,26 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
 }
 
+- (void)applyColorsFromLEColorsDictionary:(NSDictionary *)colorsPickedDictionary toBannerView:(TOLDeveloperBannerView *)bannerView{
+    UIColor *backgroundColor = [colorsPickedDictionary objectForKey:@"BackgroundColor"];
+    UIColor *primaryColor = [colorsPickedDictionary objectForKey:@"PrimaryTextColor"];
+    UIColor *secondaryColor = [colorsPickedDictionary objectForKey:@"SecondaryTextColor"];
+    
+    bannerView.backgroundColor = backgroundColor;
+    
+    CGColorRef backgroundColorRef = CGColorRetain(backgroundColor.CGColor);
+    bannerView.layer.borderColor = backgroundColorRef;
+    CGColorRelease(backgroundColorRef);
+    
+    bannerView.layer.borderWidth = 5.f;
+    
+    bannerView.appNameLabel.textColor = primaryColor;
+    bannerView.appNameLabel.shadowColor = secondaryColor;
+    
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
+}
+
 #pragma mark - Frame
 - (CGRect)frameForCurrentOrientation{
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
@@ -167,7 +190,12 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
         //ipod sized
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             frame.size.height = kTOLDeveloperBannerViewPodHeightLandscape;
-            frame.size.width = kTOLDeveloperBannerViewPodWidthLandscape;
+            if (isGiraffeScreen) {
+                frame.size.width = kTOLDeveloperBannerViewPodWidthLandscapeGiraffe;
+            }
+            else{
+                frame.size.width = kTOLDeveloperBannerViewPodWidthLandscape;
+            }
         }
         else{
             frame.size.height = kTOLDeveloperBannerViewPodHeightPortrait;
@@ -203,15 +231,20 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
          dispatch_async(image_processing_queue, ^{
              typeof(weakSelf) blockSelf = weakSelf;
              
-             CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
+//             CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
              
-             SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
-                                                           scaledSize:imageSize];
+//             SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
+//                                                           scaledSize:imageSize];
              
-             dispatch_sync(dispatch_get_main_queue(), ^{
+             [LEColorPicker pickColorFromImage:image
+                                    onComplete:^(NSDictionary *colorsPickedDictionary) {
+             
+//             dispatch_sync(dispatch_get_main_queue(), ^{
                  blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
                  
-                 [blockSelf applyColorsFromSLColors:colorArt toBannerView:blockSelf.bannerView];
+//                 [blockSelf applyColorsFromSLColors:colorArt toBannerView:blockSelf.bannerView];
+                                        blockSelf.bannerView.appIconImageView.image = image;
+                [blockSelf applyColorsFromLEColorsDictionary:colorsPickedDictionary toBannerView:blockSelf.bannerView];
                  
                  blockSelf.adLoaded = YES;
                  blockSelf.adLoading = NO;
@@ -221,7 +254,8 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
                  if(completionBlock){
                      completionBlock();
                  }
-             });
+//             });
+                                    }];
          });
          
 //         dispatch_release(image_processing_queue);

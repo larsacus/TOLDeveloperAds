@@ -17,6 +17,7 @@ extern CGFloat const kTOLDeveloperBannerViewPadHeightLandscape;
 extern CGFloat const kTOLDeveloperBannerViewPodHeightLandscape;
 extern CGFloat const kTOLDeveloperBannerViewPadWidthLandscape;
 extern CGFloat const kTOLDeveloperBannerViewPodWidthLandscape;
+extern CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe;
 
 
 @interface TOLDeveloperBannerView : UIView

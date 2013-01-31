@@ -22,6 +22,9 @@
 		46D9ECE0169D039800C06EFD /* TOLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D9ECDF169D039800C06EFD /* TOLViewController.m */; };
 		46D9ECE3169D039800C06EFD /* TOLViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECE1169D039800C06EFD /* TOLViewController_iPhone.xib */; };
 		46D9ECE6169D039800C06EFD /* TOLViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECE4169D039800C06EFD /* TOLViewController_iPad.xib */; };
+		46DFDAA716A7C5200061D5DE /* LEColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DFDAA216A7C5200061D5DE /* LEColorPicker.m */; };
+		46DFDAA816A7C5200061D5DE /* UIColor+YUVSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DFDAA416A7C5200061D5DE /* UIColor+YUVSpace.m */; };
+		46DFDAA916A7C5200061D5DE /* UIImage+LEColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DFDAA616A7C5200061D5DE /* UIImage+LEColorPicker.m */; };
 		BF72DFD61D8B4E6FB527493C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA9A0D6BA8940B58B02D5A3 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +52,12 @@
 		46D9ECDF169D039800C06EFD /* TOLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TOLViewController.m; sourceTree = "<group>"; };
 		46D9ECE2169D039800C06EFD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TOLViewController_iPhone.xib; sourceTree = "<group>"; };
 		46D9ECE5169D039800C06EFD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TOLViewController_iPad.xib; sourceTree = "<group>"; };
+		46DFDAA116A7C5200061D5DE /* LEColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LEColorPicker.h; sourceTree = "<group>"; };
+		46DFDAA216A7C5200061D5DE /* LEColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LEColorPicker.m; sourceTree = "<group>"; };
+		46DFDAA316A7C5200061D5DE /* UIColor+YUVSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+YUVSpace.h"; sourceTree = "<group>"; };
+		46DFDAA416A7C5200061D5DE /* UIColor+YUVSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+YUVSpace.m"; sourceTree = "<group>"; };
+		46DFDAA516A7C5200061D5DE /* UIImage+LEColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+LEColorPicker.h"; sourceTree = "<group>"; };
+		46DFDAA616A7C5200061D5DE /* UIImage+LEColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LEColorPicker.m"; sourceTree = "<group>"; };
 		9F3F7CA618204A4785DEB776 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		BFA9A0D6BA8940B58B02D5A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -84,6 +93,7 @@
 		46D9ECB7169D039800C06EFD = {
 			isa = PBXGroup;
 			children = (
+				46DFDA9E16A7C5180061D5DE /* Vendor */,
 				4640F74D169E7F260008D6EB /* QuartzCore.framework */,
 				468A4FA8169D256D007DF9B9 /* Podfile */,
 				46D9ECCC169D039800C06EFD /* DeveloperAdsDemo */,
@@ -139,6 +149,28 @@
 				46D9ECDC169D039800C06EFD /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		46DFDA9E16A7C5180061D5DE /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				46DFDAA016A7C5200061D5DE /* LEColorPicker */,
+			);
+			name = Vendor;
+			sourceTree = "<group>";
+		};
+		46DFDAA016A7C5200061D5DE /* LEColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				46DFDAA116A7C5200061D5DE /* LEColorPicker.h */,
+				46DFDAA216A7C5200061D5DE /* LEColorPicker.m */,
+				46DFDAA316A7C5200061D5DE /* UIColor+YUVSpace.h */,
+				46DFDAA416A7C5200061D5DE /* UIColor+YUVSpace.m */,
+				46DFDAA516A7C5200061D5DE /* UIImage+LEColorPicker.h */,
+				46DFDAA616A7C5200061D5DE /* UIImage+LEColorPicker.m */,
+			);
+			name = LEColorPicker;
+			path = Vendor/LEColorPicker/LEColorPicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,6 +264,9 @@
 				46D9ECE0169D039800C06EFD /* TOLViewController.m in Sources */,
 				468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */,
 				4640F74B169E4C870008D6EB /* TOLDeveloperBannerView.m in Sources */,
+				46DFDAA716A7C5200061D5DE /* LEColorPicker.m in Sources */,
+				46DFDAA816A7C5200061D5DE /* UIColor+YUVSpace.m in Sources */,
+				46DFDAA916A7C5200061D5DE /* UIImage+LEColorPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
