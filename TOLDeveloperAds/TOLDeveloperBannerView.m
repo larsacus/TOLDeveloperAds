@@ -136,22 +136,27 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         
         CGContextSaveGState(context);
         {
-            CGRect contentRect = CGRectMake(contentXOrigin-2.f,
-                                            0.f,
-                                            CGRectGetWidth(rect)-contentXOrigin,
-                                            CGRectGetHeight(rect));
+            CGRect shadowContentRect = CGRectMake(contentXOrigin-2.f,
+                                                  0.f,
+                                                  CGRectGetWidth(rect)-contentXOrigin,
+                                                  CGRectGetHeight(rect));
             
             //bounds shadow to content region
             UIBezierPath *clippingPath = [UIBezierPath bezierPathWithRect:contentRect];
             CGContextAddPath(context, clippingPath.CGPath);
             CGContextClip(context);
             
-            //creates shadow path with hole cutout for content
-            UIBezierPath *shadowRectPath = [UIBezierPath bezierPathWithRect:contentRect];
-            [shadowRectPath appendPath:contentCutout];
             
-            CGColorRef redColor = CGColorRetain([UIColor colorWithWhite:0.f alpha:0.5].CGColor);
-            CGContextSetShadowWithColor(context, CGSizeZero, 3.f, redColor);
+            UIBezierPath *shadowContentCutoutPath = [[UIBezierPath bezierPathWithRoundedRect:contentRect cornerRadius:margin*2] bezierPathByReversingPath];
+            
+            //creates path that will create shadow
+            UIBezierPath *shadowRectPath = [UIBezierPath bezierPathWithRect:shadowContentRect];
+            [shadowRectPath appendPath:shadowContentCutoutPath];
+            
+            [[UIColor whiteColor] setFill];
+            
+            CGColorRef redColor = CGColorRetain([UIColor colorWithWhite:0.f alpha:0.5f].CGColor);
+            CGContextSetShadowWithColor(context, CGSizeZero, margin, redColor);
             CGColorRelease(redColor);
             
             CGContextAddPath(context, shadowRectPath.CGPath);
