@@ -10,6 +10,10 @@
 		4640F74B169E4C870008D6EB /* TOLDeveloperBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4640F74A169E4C870008D6EB /* TOLDeveloperBannerView.m */; };
 		4640F74E169E7F260008D6EB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4640F74D169E7F260008D6EB /* QuartzCore.framework */; };
 		468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */ = {isa = PBXBuildFile; fileRef = 468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */; };
+		46ACBE1516BF570F00350976 /* frame.png in Resources */ = {isa = PBXBuildFile; fileRef = 46ACBE1116BF570F00350976 /* frame.png */; };
+		46ACBE1616BF570F00350976 /* frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46ACBE1216BF570F00350976 /* frame@2x.png */; };
+		46ACBE1716BF570F00350976 /* pricetag.png in Resources */ = {isa = PBXBuildFile; fileRef = 46ACBE1316BF570F00350976 /* pricetag.png */; };
+		46ACBE1816BF570F00350976 /* pricetag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46ACBE1416BF570F00350976 /* pricetag@2x.png */; };
 		46D9ECC7169D039800C06EFD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC6169D039800C06EFD /* UIKit.framework */; };
 		46D9ECC9169D039800C06EFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC8169D039800C06EFD /* Foundation.framework */; };
 		46D9ECCB169D039800C06EFD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECCA169D039800C06EFD /* CoreGraphics.framework */; };
@@ -35,6 +39,10 @@
 		468A4E8F169D047C007DF9B9 /* TOLDeveloperAds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOLDeveloperAds.h; sourceTree = "<group>"; };
 		468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOLDeveloperAds.m; sourceTree = "<group>"; };
 		468A4FA8169D256D007DF9B9 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		46ACBE1116BF570F00350976 /* frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame.png; sourceTree = "<group>"; };
+		46ACBE1216BF570F00350976 /* frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame@2x.png"; sourceTree = "<group>"; };
+		46ACBE1316BF570F00350976 /* pricetag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pricetag.png; sourceTree = "<group>"; };
+		46ACBE1416BF570F00350976 /* pricetag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pricetag@2x.png"; sourceTree = "<group>"; };
 		46D9ECC2169D039800C06EFD /* DeveloperAdsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeveloperAdsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D9ECC6169D039800C06EFD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		46D9ECC8169D039800C06EFD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -81,6 +89,7 @@
 		468A4E8D169D0464007DF9B9 /* TOLDeveloperAds */ = {
 			isa = PBXGroup;
 			children = (
+				46ACBE1916BF571400350976 /* Assets */,
 				468A4E8F169D047C007DF9B9 /* TOLDeveloperAds.h */,
 				468A4E90169D047C007DF9B9 /* TOLDeveloperAds.m */,
 				4640F749169E4C870008D6EB /* TOLDeveloperBannerView.h */,
@@ -88,6 +97,17 @@
 			);
 			name = TOLDeveloperAds;
 			path = ../TOLDeveloperAds;
+			sourceTree = "<group>";
+		};
+		46ACBE1916BF571400350976 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				46ACBE1116BF570F00350976 /* frame.png */,
+				46ACBE1216BF570F00350976 /* frame@2x.png */,
+				46ACBE1316BF570F00350976 /* pricetag.png */,
+				46ACBE1416BF570F00350976 /* pricetag@2x.png */,
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 		46D9ECB7169D039800C06EFD = {
@@ -232,6 +252,10 @@
 				46D9ECDD169D039800C06EFD /* Default-568h@2x.png in Resources */,
 				46D9ECE3169D039800C06EFD /* TOLViewController_iPhone.xib in Resources */,
 				46D9ECE6169D039800C06EFD /* TOLViewController_iPad.xib in Resources */,
+				46ACBE1516BF570F00350976 /* frame.png in Resources */,
+				46ACBE1616BF570F00350976 /* frame@2x.png in Resources */,
+				46ACBE1716BF570F00350976 /* pricetag.png in Resources */,
+				46ACBE1816BF570F00350976 /* pricetag@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

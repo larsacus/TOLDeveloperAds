@@ -49,6 +49,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 @property (nonatomic, strong) NSMutableIndexSet *adIndex;
 @property (nonatomic, readwrite) BOOL adLoaded;
 @property (nonatomic, getter = isAdLoading) BOOL adLoading;
+@property (nonatomic, strong) UIImageView *frameImageView;
 
 @end
 
@@ -132,12 +133,6 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     bannerView.appIconImageView.image = colorArt.scaledImage;
     bannerView.backgroundColor = colorArt.primaryColor;
     
-    CGColorRef backgroundColor = CGColorRetain(colorArt.backgroundColor.CGColor);
-    bannerView.layer.borderColor = backgroundColor;
-    CGColorRelease(backgroundColor);
-    
-    bannerView.layer.borderWidth = 5.f;
-    
     bannerView.appNameLabel.textColor = colorArt.secondaryColor;
     bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
     
@@ -151,12 +146,6 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     UIColor *secondaryColor = [colorsPickedDictionary objectForKey:@"SecondaryTextColor"];
     
     bannerView.backgroundColor = backgroundColor;
-    
-    CGColorRef backgroundColorRef = CGColorRetain(backgroundColor.CGColor);
-    bannerView.layer.borderColor = backgroundColorRef;
-    CGColorRelease(backgroundColorRef);
-    
-    bannerView.layer.borderWidth = 5.f;
     
     bannerView.appNameLabel.textColor = primaryColor;
     bannerView.appNameLabel.shadowColor = secondaryColor;
@@ -487,6 +476,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 #pragma mark - Required TOLAdAdapter Methods
 - (void)layoutBannerForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
     self.bannerView.frame = [self frameForOrientation:interfaceOrientation];
+    [self.bannerView setNeedsDisplay];
 }
 
 - (TOLDeveloperBannerView *)bannerView{

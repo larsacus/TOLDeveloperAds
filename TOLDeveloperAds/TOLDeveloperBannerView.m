@@ -22,6 +22,16 @@ CGFloat const kTOLDeveloperBannerViewPadWidthLandscape = 1024.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthLandscape = 480.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 
+@interface TOLDeveloperBannerViewFrame : UIView
+
+@end
+
+@interface TOLDeveloperBannerView ()
+
+@property (nonatomic, strong) TOLDeveloperBannerViewFrame *bannerFrame;
+
+@end
+
 @implementation TOLDeveloperBannerView
 
 - (id)initWithFrame:(CGRect)frame
@@ -46,12 +56,21 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         _appIconImageView.clipsToBounds = YES;
         _appIconImageView.contentMode = UIViewContentModeScaleAspectFit;
         
+        self.bannerFrame = [[TOLDeveloperBannerViewFrame alloc] initWithFrame:self.bounds];
+        self.bannerFrame.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
         [self addSubview:_appIconImageView];
         [self addSubview:_appNameLabel];
+        [self addSubview:self.bannerFrame];
         
         self.backgroundColor = [UIColor greenColor];
     }
     return self;
+}
+
+- (void)setNeedsDisplay{
+    [super setNeedsDisplay];
+    [self.bannerFrame setNeedsDisplay];
 }
 
 - (void)layoutSubviews{
@@ -74,6 +93,106 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
                                      appNameHeight);
     self.appNameLabel.frame = appNameFrame;
 
+}
+
+@end
+
+@implementation TOLDeveloperBannerViewFrame
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor clearColor];
+    }
+    return self;
+}
+
+- (void)drawRect:(CGRect)rect{
+    
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSaveGState(context);
+    {
+        CGContextClearRect(context, rect);
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGFloat margin = 4.f;
+        
+        //icon cutout
+        CGFloat iconDimension = CGRectGetHeight(rect)-margin*2;
+        CGRect iconRect = CGRectMake(margin, margin, iconDimension, iconDimension);
+        CGFloat contentXOrigin = CGRectGetWidth(iconRect)+margin*2;
+        CGRect contentRect = CGRectMake(contentXOrigin,
+                                        margin,
+                                        CGRectGetWidth(rect)-CGRectGetWidth(iconRect)-3*margin,
+                                        CGRectGetHeight(rect)-margin*2);
+        
+        UIBezierPath *iconCutout = [[UIBezierPath bezierPathWithRoundedRect:iconRect cornerRadius:margin*2] bezierPathByReversingPath];
+        UIBezierPath *contentCutout = [[UIBezierPath bezierPathWithRoundedRect:contentRect cornerRadius:margin*2] bezierPathByReversingPath];
+        UIBezierPath *fullRectPath = [UIBezierPath bezierPathWithRect:rect];
+        [fullRectPath appendPath:contentCutout];
+        [fullRectPath appendPath:iconCutout];
+        
+        CGContextSaveGState(context);
+        {
+            CGRect contentRect = CGRectMake(contentXOrigin-2.f,
+                                            0.f,
+                                            CGRectGetWidth(rect)-contentXOrigin,
+                                            CGRectGetHeight(rect));
+            
+            //bounds shadow to content region
+            UIBezierPath *clippingPath = [UIBezierPath bezierPathWithRect:contentRect];
+            CGContextAddPath(context, clippingPath.CGPath);
+            CGContextClip(context);
+            
+            //creates shadow path with hole cutout for content
+            UIBezierPath *shadowRectPath = [UIBezierPath bezierPathWithRect:contentRect];
+            [shadowRectPath appendPath:contentCutout];
+            
+            CGColorRef redColor = CGColorRetain([UIColor colorWithWhite:0.f alpha:0.5].CGColor);
+            CGContextSetShadowWithColor(context, CGSizeZero, 3.f, redColor);
+            CGColorRelease(redColor);
+            
+            CGContextAddPath(context, shadowRectPath.CGPath);
+            CGContextFillPath(context);
+        }
+        CGContextRestoreGState(context);
+        
+        CGContextSaveGState(context);
+        {   
+            CGContextAddPath(context, fullRectPath.CGPath);
+            CGContextClip(context);
+            
+            //Gradient
+            CGFloat locations[2] = { 0.0, 1.0 };
+            CGColorRef topColor = CGColorRetain([UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1.0].CGColor);
+            CGColorRef bottomColor = CGColorRetain([UIColor colorWithRed:0.67 green:0.67 blue:0.67 alpha:1.0].CGColor);
+            
+            NSArray *colors = @[(__bridge id)topColor, (__bridge id)bottomColor];
+            CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colors, locations);
+            
+            CGPoint startPoint = CGPointMake(CGRectGetWidth(rect)/2, 0.f);
+            CGPoint endPoint = CGPointMake(CGRectGetWidth(rect)/2, CGRectGetHeight(rect));
+            CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, kCGGradientDrawsAfterEndLocation);
+            
+            CGColorRelease(topColor);
+            CGColorRelease(bottomColor);
+        }
+        CGContextRestoreGState(context);
+        
+        //top line
+        UIBezierPath *topLinePath = [UIBezierPath bezierPath];
+        [topLinePath moveToPoint:CGPointMake(0.f, 1.f/scale)];
+        [topLinePath addLineToPoint:CGPointMake(CGRectGetWidth(rect), 1.f/scale)];
+        [topLinePath setLineWidth:1.f];
+        [[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0] setStroke];
+        [topLinePath stroke];
+        
+    }
+    CGContextRestoreGState(context);
+    
+    [super drawRect:rect];
 }
 
 @end
