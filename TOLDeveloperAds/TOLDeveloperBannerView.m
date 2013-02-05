@@ -22,7 +22,7 @@ CGFloat const kTOLDeveloperBannerViewPadWidthLandscape = 1024.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthLandscape = 480.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 
-//CGFloat const kTOLDeveloperBannerViewFrameCornerRadius = 
+CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 
 @interface TOLDeveloperBannerViewFrame : UIView
 
@@ -54,7 +54,12 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         self.appIconImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.appIconImageView.backgroundColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
         
-        self.bannerFrame = [[TOLDeveloperBannerViewFrame alloc] initWithFrame:self.bounds];
+        CGFloat scale = [[UIScreen mainScreen] scale];
+        CGRect bannerFrameRect =CGRectMake(0.f,
+                                           kTOLDeveloperBannerViewFrameGap/scale,
+                                           CGRectGetWidth(self.frame),
+                                           CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap/scale);
+        self.bannerFrame = [[TOLDeveloperBannerViewFrame alloc] initWithFrame:bannerFrameRect];
         self.bannerFrame.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         UIImage *priceImage = [UIImage imageNamed:@"pricetag"];
@@ -87,8 +92,25 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         [self.priceTagImageView addSubview:self.priceLabel];
         
         self.backgroundColor = [UIColor clearColor];
+        self.primaryColor = [UIColor redColor];
     }
     return self;
+}
+
+- (void)drawRect:(CGRect)rect{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGContextClearRect(context, rect);
+    CGColorRef primaryColor = CGColorRetain(self.primaryColor.CGColor);
+    CGContextSetFillColorWithColor(context, primaryColor);
+    CGColorRelease(primaryColor);
+    CGContextFillRect(context, CGRectMake(rect.origin.x,
+                                          kTOLDeveloperBannerViewFrameGap,
+                                          CGRectGetWidth(rect),
+                                          CGRectGetHeight(rect)));
+    
+    [super drawRect:rect];
 }
 
 - (void)setNeedsDisplay{
@@ -142,7 +164,7 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
     {
         CGContextClearRect(context, rect);
         CGFloat margin = 4.f;
-        CGFloat cornerRadius = CGRectGetHeight(rect)/6.f;
+        CGFloat cornerRadius = CGRectGetHeight(rect)/8.f;
         
         //icon cutout
         CGFloat iconDimension = CGRectGetHeight(rect)-margin*2;
@@ -192,12 +214,16 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         CGContextAddPath(context, fullRectPath.CGPath);
         CGContextClip(context);
         
-        [self drawGradientInContext:context inRect:CGRectMake(0.f, 2.f, CGRectGetWidth(rect), CGRectGetHeight(rect)-2.f)];
+        CGRect frameGradientRect = CGRectMake(0.f,
+                                              kTOLDeveloperBannerViewFrameGap/scale,
+                                              CGRectGetWidth(rect),
+                                              CGRectGetHeight(rect)-kTOLDeveloperBannerViewFrameGap/scale);
+        [self drawGradientInContext:context inRect:frameGradientRect];
         
         //top line
         UIBezierPath *topLinePath = [UIBezierPath bezierPath];
-        [topLinePath moveToPoint:CGPointMake(0.f, 4.f/scale)];
-        [topLinePath addLineToPoint:CGPointMake(CGRectGetWidth(rect), 4.f/scale)];
+        [topLinePath moveToPoint:CGPointMake(0.f, 1.f/scale)];
+        [topLinePath addLineToPoint:CGPointMake(CGRectGetWidth(rect), 1.f/scale)];
         [topLinePath setLineWidth:1.f];
         [[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0] setStroke];
         [topLinePath stroke];
@@ -209,7 +235,6 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 }
 
 - (void)drawGradientInContext:(CGContextRef)context inRect:(CGRect)rect{
-    
     CGContextSaveGState(context);
     {
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();

@@ -131,7 +131,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 - (void)applyColorsFromSLColors:(SLColorArt *)colorArt toBannerView:(TOLDeveloperBannerView *)bannerView{
     bannerView.appIconImageView.image = colorArt.scaledImage;
-    bannerView.backgroundColor = colorArt.primaryColor;
+    bannerView.primaryColor = colorArt.primaryColor;
     
     bannerView.appNameLabel.textColor = colorArt.secondaryColor;
     bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
@@ -145,7 +145,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     UIColor *primaryColor = [colorsPickedDictionary objectForKey:@"PrimaryTextColor"];
     UIColor *secondaryColor = [colorsPickedDictionary objectForKey:@"SecondaryTextColor"];
     
-    bannerView.backgroundColor = backgroundColor;
+    bannerView.primaryColor = backgroundColor;
     
     bannerView.appNameLabel.textColor = primaryColor;
     bannerView.appNameLabel.shadowColor = secondaryColor;
