@@ -137,9 +137,9 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
     self.appNameLabel.frame = appNameFrame;
     
     CGRect bannerFrameRect = CGRectMake(0.f,
-                                       kTOLDeveloperBannerViewFrameGap/scale,
+                                       kTOLDeveloperBannerViewFrameGap,
                                        CGRectGetWidth(self.frame),
-                                       CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap/scale);
+                                       CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap);
     self.bannerFrame.frame = bannerFrameRect;
 
 }
@@ -217,9 +217,9 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
         CGContextClip(context);
         
         CGRect frameGradientRect = CGRectMake(0.f,
-                                              kTOLDeveloperBannerViewFrameGap/scale,
+                                              kTOLDeveloperBannerViewFrameGap,
                                               CGRectGetWidth(rect),
-                                              CGRectGetHeight(rect)-kTOLDeveloperBannerViewFrameGap/scale);
+                                              CGRectGetHeight(rect)-kTOLDeveloperBannerViewFrameGap);
         [self drawGradientInContext:context inRect:frameGradientRect];
         
         //top line
