@@ -384,6 +384,7 @@
 				GCC_PREFIX_HEADER = "DeveloperAdsDemo/DeveloperAdsDemo-Prefix.pch";
 				INFOPLIST_FILE = "DeveloperAdsDemo/DeveloperAdsDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -396,6 +397,7 @@
 				GCC_PREFIX_HEADER = "DeveloperAdsDemo/DeveloperAdsDemo-Prefix.pch";
 				INFOPLIST_FILE = "DeveloperAdsDemo/DeveloperAdsDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

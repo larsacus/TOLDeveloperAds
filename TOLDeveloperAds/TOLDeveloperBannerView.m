@@ -22,6 +22,8 @@ CGFloat const kTOLDeveloperBannerViewPadWidthLandscape = 1024.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthLandscape = 480.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 
+//CGFloat const kTOLDeveloperBannerViewFrameCornerRadius = 
+
 @interface TOLDeveloperBannerViewFrame : UIView
 
 @end
@@ -39,24 +41,18 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _appIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _appIconImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        self.appIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        self.appIconImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
-        _appNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _appNameLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-        _appNameLabel.backgroundColor = [UIColor clearColor];
-        _appNameLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12.f];
+        self.appNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        self.appNameLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        self.appNameLabel.backgroundColor = [UIColor clearColor];
+        self.appNameLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:12.f];
         
-//        CGColorRef redColor = CGColorRetain([UIColor redColor].CGColor);
-//        
-//        _appNameLabel.layer.borderColor = redColor;
-//        _appNameLabel.layer.borderWidth = 1.f;
-//        
-//        CGColorRelease(redColor);
-        
-        _appIconImageView.layer.cornerRadius = 5.f;
-        _appIconImageView.clipsToBounds = YES;
-        _appIconImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.appIconImageView.layer.cornerRadius = 5.f;
+        self.appIconImageView.clipsToBounds = YES;
+        self.appIconImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.appIconImageView.backgroundColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
         
         self.bannerFrame = [[TOLDeveloperBannerViewFrame alloc] initWithFrame:self.bounds];
         self.bannerFrame.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -70,12 +66,27 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         self.priceTagImageView.image = priceImage;
         self.priceTagImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
         
+        CGFloat labelHeight = 15.f;
+        self.priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(13.f,
+                                                                    CGRectGetHeight(self.priceTagImageView.frame)/2-labelHeight/2 - 7.f,
+                                                                    CGRectGetWidth(self.priceTagImageView.frame)/sqrt(2.f),
+                                                                    labelHeight)];
+
+        self.priceLabel.transform = CGAffineTransformMakeRotation(M_PI_4);
+        self.priceLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:13.f];
+        self.priceLabel.textAlignment = UITextAlignmentCenter;
+        self.priceLabel.backgroundColor = [UIColor clearColor];
+        self.priceLabel.adjustsFontSizeToFitWidth = YES;
+        self.priceLabel.adjustsLetterSpacingToFitWidth = YES;
+        self.priceLabel.textColor = [UIColor colorWithRed:0.47 green:0.31 blue:0.12 alpha:1.0];
+        
         [self addSubview:_appIconImageView];
         [self addSubview:_appNameLabel];
         [self addSubview:self.bannerFrame];
         [self addSubview:self.priceTagImageView];
+        [self.priceTagImageView addSubview:self.priceLabel];
         
-        self.backgroundColor = [UIColor greenColor];
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -103,8 +114,8 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
                                      margin*2,
                                      CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-20.f,
                                      appNameHeight);
-    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
-    self.appNameLabel.layer.borderWidth = 1.f;
+//    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
+//    self.appNameLabel.layer.borderWidth = 1.f;
     self.appNameLabel.frame = appNameFrame;
 
 }
@@ -131,7 +142,7 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
     {
         CGContextClearRect(context, rect);
         CGFloat margin = 4.f;
-        CGFloat cornerRadius = CGRectGetHeight(rect)/8.f;
+        CGFloat cornerRadius = CGRectGetHeight(rect)/6.f;
         
         //icon cutout
         CGFloat iconDimension = CGRectGetHeight(rect)-margin*2;
@@ -167,11 +178,11 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 //            UIBezierPath *shadowRectPath = [UIBezierPath bezierPathWithRect:shadowContentRect];
 //            [shadowRectPath appendPath:shadowContentCutoutPath];
             
-            [[UIColor whiteColor] setFill];
+            [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0] setFill];
             
-            CGColorRef redColor = CGColorRetain([UIColor colorWithWhite:0.f alpha:0.25f].CGColor);
-            CGContextSetShadowWithColor(context, CGSizeMake(0.f, 1.f), 5.f, redColor);
-            CGColorRelease(redColor);
+            CGColorRef shadowColor = CGColorRetain([UIColor colorWithWhite:0.f alpha:0.55f].CGColor);
+            CGContextSetShadowWithColor(context, CGSizeMake(0.f, 1.f), 5.f, shadowColor);
+            CGColorRelease(shadowColor);
             
             CGContextAddPath(context, fullRectPath.CGPath);
             CGContextFillPath(context);
@@ -181,12 +192,12 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         CGContextAddPath(context, fullRectPath.CGPath);
         CGContextClip(context);
         
-        [self drawGradientInContext:context inRect:rect];
+        [self drawGradientInContext:context inRect:CGRectMake(0.f, 2.f, CGRectGetWidth(rect), CGRectGetHeight(rect)-2.f)];
         
         //top line
         UIBezierPath *topLinePath = [UIBezierPath bezierPath];
-        [topLinePath moveToPoint:CGPointMake(0.f, 1.f/scale)];
-        [topLinePath addLineToPoint:CGPointMake(CGRectGetWidth(rect), 1.f/scale)];
+        [topLinePath moveToPoint:CGPointMake(0.f, 4.f/scale)];
+        [topLinePath addLineToPoint:CGPointMake(CGRectGetWidth(rect), 4.f/scale)];
         [topLinePath setLineWidth:1.f];
         [[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0] setStroke];
         [topLinePath stroke];
@@ -210,10 +221,12 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
         
         NSArray *colors = @[(__bridge id)topColor, (__bridge id)bottomColor];
         CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colors, locations);
+        CGColorSpaceRelease(colorSpace);
         
-        CGPoint startPoint = CGPointMake(CGRectGetWidth(rect)/2, 0.f);
-        CGPoint endPoint = CGPointMake(CGRectGetWidth(rect)/2, CGRectGetHeight(rect));
+        CGPoint startPoint = CGPointMake(CGRectGetWidth(rect)/2, rect.origin.y);
+        CGPoint endPoint = CGPointMake(CGRectGetWidth(rect)/2, rect.origin.y + CGRectGetHeight(rect));
         CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, kCGGradientDrawsAfterEndLocation);
+        CGGradientRelease(gradient);
         
         CGColorRelease(topColor);
         CGColorRelease(bottomColor);

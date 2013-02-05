@@ -24,5 +24,6 @@ extern CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe;
 
 @property (nonatomic, strong) UIImageView *appIconImageView;
 @property (nonatomic, strong) UILabel *appNameLabel;
+@property (nonatomic, strong) UILabel *priceLabel;
 
 @end

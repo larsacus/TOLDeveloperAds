@@ -21,7 +21,7 @@ static NSTimeInterval const kTOLDevAdsSecondsInDay = 86400;
 
 /** keys for track metadata */
 static NSString * const kTOLDevAdsAppKeyArtistName = @"artistName";
-static NSString * const kTOLDevAdsAppKeyIconURL = @"artworkUrl512"; //options are 60, 100, 512
+static NSString * const kTOLDevAdsAppKeyIconURL = @"artworkUrl100"; //options are 60, 100, 512
 static NSString * const kTOLDevAdsAppKeyAverageRatingCurrentVersion = @"averageUserRatingForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyBundleId = @"bundleId";
 static NSString * const kTOLDevAdsAppKeyFormattedPrice = @"formattedPrice";
@@ -154,6 +154,30 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
 }
 
+- (UIImage *)image:(UIImage *)image resizedToSize:(CGSize)newSize{
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGImageRef imageRef = CGImageRetain(image.CGImage);
+    CGColorSpaceRef genericColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(NULL,
+                                                 newSize.width*scale,
+                                                 newSize.height*scale,
+                                                 8, (4 * newSize.width*scale),
+                                                 genericColorSpace,
+                                                 kCGImageAlphaPremultipliedFirst);
+    CGColorSpaceRelease(genericColorSpace);
+    
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    
+    CGContextDrawImage(context, CGRectMake(0.f, 0.f, newSize.width*scale, newSize.height*scale), imageRef);
+    CGImageRelease(imageRef);
+    CGImageRef newImageRef = CGBitmapContextCreateImage(context);
+    CGContextRelease(context);
+    UIImage *newUIImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(newImageRef);
+    
+    return newUIImage;
+}
+
 #pragma mark - Frame
 - (CGRect)frameForCurrentOrientation{
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
@@ -220,31 +244,34 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
          dispatch_async(image_processing_queue, ^{
              typeof(weakSelf) blockSelf = weakSelf;
              
-//             CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
+             //             CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
              
-//             SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
-//                                                           scaledSize:imageSize];
+             //             SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
+             //                                                           scaledSize:imageSize];
              
-             [LEColorPicker pickColorFromImage:image
-                                    onComplete:^(NSDictionary *colorsPickedDictionary) {
+             CGSize iconSize = blockSelf.bannerView.appIconImageView.bounds.size;
+             UIImage *resizedImage = [self image:image resizedToSize:iconSize];
              
-//             dispatch_sync(dispatch_get_main_queue(), ^{
-                 blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
-                 
-//                 [blockSelf applyColorsFromSLColors:colorArt toBannerView:blockSelf.bannerView];
-                                        blockSelf.bannerView.appIconImageView.image = image;
-                [blockSelf applyColorsFromLEColorsDictionary:colorsPickedDictionary toBannerView:blockSelf.bannerView];
-                 
-                 blockSelf.adLoaded = YES;
-                 blockSelf.adLoading = NO;
-                 
-                 [blockSelf.adManager adSucceededForNetworkAdapterClass:blockSelf.class];
-                 
-                 if(completionBlock){
-                     completionBlock();
-                 }
-//             });
-                                    }];
+             [LEColorPicker
+              pickColorFromImage:image
+              onComplete:^(NSDictionary *colorsPickedDictionary) {
+                  
+                  blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
+                  blockSelf.bannerView.priceLabel.text = adInfo[kTOLDevAdsAppKeyFormattedPrice];
+                  //                 [blockSelf applyColorsFromSLColors:colorArt toBannerView:blockSelf.bannerView];
+                  CGSize iconSize = blockSelf.bannerView.appIconImageView.bounds.size;
+                  blockSelf.bannerView.appIconImageView.image = resizedImage;
+                  [blockSelf applyColorsFromLEColorsDictionary:colorsPickedDictionary toBannerView:blockSelf.bannerView];
+                  
+                  blockSelf.adLoaded = YES;
+                  blockSelf.adLoading = NO;
+                  
+                  [blockSelf.adManager adSucceededForNetworkAdapterClass:blockSelf.class];
+                  
+                  if(completionBlock){
+                      completionBlock();
+                  }
+              }];
          });
          
 //         dispatch_release(image_processing_queue);
