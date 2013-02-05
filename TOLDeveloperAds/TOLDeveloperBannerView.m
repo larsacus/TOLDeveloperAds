@@ -37,7 +37,7 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 
 @implementation TOLDeveloperBannerView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -54,13 +54,8 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
         self.appIconImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.appIconImageView.backgroundColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
         
-        CGFloat scale = [[UIScreen mainScreen] scale];
-        CGRect bannerFrameRect =CGRectMake(0.f,
-                                           kTOLDeveloperBannerViewFrameGap/scale,
-                                           CGRectGetWidth(self.frame),
-                                           CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap/scale);
-        self.bannerFrame = [[TOLDeveloperBannerViewFrame alloc] initWithFrame:bannerFrameRect];
-        self.bannerFrame.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.bannerFrame = [[TOLDeveloperBannerViewFrame alloc] initWithFrame:CGRectZero];
+        self.bannerFrame.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
         
         UIImage *priceImage = [UIImage imageNamed:@"pricetag"];
         CGSize priceTagImageSize = priceImage.size;
@@ -121,6 +116,7 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 - (void)layoutSubviews{
     [super layoutSubviews];
     
+    CGFloat scale = [[UIScreen mainScreen] scale];
     CGRect frame = self.frame;
     
     CGFloat margin = 4.f;
@@ -139,6 +135,12 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 //    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
 //    self.appNameLabel.layer.borderWidth = 1.f;
     self.appNameLabel.frame = appNameFrame;
+    
+    CGRect bannerFrameRect = CGRectMake(0.f,
+                                       kTOLDeveloperBannerViewFrameGap/scale,
+                                       CGRectGetWidth(self.frame),
+                                       CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap/scale);
+    self.bannerFrame.frame = bannerFrameRect;
 
 }
 
