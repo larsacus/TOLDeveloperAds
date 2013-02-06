@@ -268,6 +268,8 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
                   
                   [blockSelf.adManager adSucceededForNetworkAdapterClass:blockSelf.class];
                   
+                  [blockSelf.bannerView setNeedsDisplay];
+                  
                   if(completionBlock){
                       completionBlock();
                   }

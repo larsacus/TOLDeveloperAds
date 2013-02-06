@@ -24,6 +24,8 @@ CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe = 568.f;
 
 CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 
+#define TOLScreenScale ([[UIScreen mainScreen] scale])
+
 @interface TOLDeveloperBannerViewFrame : UIView
 
 @end
@@ -95,7 +97,6 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 - (void)drawRect:(CGRect)rect{
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGFloat scale = [[UIScreen mainScreen] scale];
     CGContextClearRect(context, rect);
     CGColorRef primaryColor = CGColorRetain(self.primaryColor.CGColor);
     CGContextSetFillColorWithColor(context, primaryColor);
@@ -116,7 +117,6 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 - (void)layoutSubviews{
     [super layoutSubviews];
     
-    CGFloat scale = [[UIScreen mainScreen] scale];
     CGRect frame = self.frame;
     
     CGFloat margin = 4.f;
@@ -141,6 +141,8 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
                                        CGRectGetWidth(self.frame),
                                        CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap);
     self.bannerFrame.frame = bannerFrameRect;
+    
+    [self setNeedsDisplay];
 
 }
 
@@ -158,7 +160,7 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 
 - (void)drawRect:(CGRect)rect{
     
-    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGFloat scale = TOLScreenScale;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
