@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TOLDeveloperBannerProtocol.h"
 
 extern CGFloat const kTOLDeveloperBannerViewPadHeightPortrait;
 extern CGFloat const kTOLDeveloperBannerViewPodHeightPortrait;
@@ -20,11 +21,14 @@ extern CGFloat const kTOLDeveloperBannerViewPodWidthLandscape;
 extern CGFloat const kTOLDeveloperBannerViewPodWidthLandscapeGiraffe;
 
 
-@interface TOLDeveloperBannerView : UIView
+@interface TOLDeveloperBannerView : UIView <TOLDeveloperBannerProtocol>
 
-@property (nonatomic, strong) UIImageView *appIconImageView;
-@property (nonatomic, strong) UILabel *appNameLabel;
-@property (nonatomic, strong) UILabel *priceLabel;
+@property (nonatomic, strong) UIColor *secondaryColor;
+@property (nonatomic) CGFloat percentage;
+@property (nonatomic, copy) NSString *appName;
+@property (nonatomic, copy) NSString *price;
 @property (nonatomic, strong) UIColor *primaryColor;
+@property (nonatomic, strong) UIImage *appIconImage;
+@property (nonatomic) UIInterfaceOrientation orientation;
 
 @end

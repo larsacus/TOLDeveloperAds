@@ -9,6 +9,8 @@
 #import "TOLDeveloperBannerView.h"
 #import <QuartzCore/QuartzCore.h>
 
+#import "TOLStarsView.h"
+
 /** portrait constants */
 CGFloat const kTOLDeveloperBannerViewPadHeightPortrait = 90.f;
 CGFloat const kTOLDeveloperBannerViewPodHeightPortrait = 50.f;
@@ -32,8 +34,12 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 
 @interface TOLDeveloperBannerView ()
 
+@property (nonatomic, strong) UIImageView *appIconImageView;
+@property (nonatomic, strong) UILabel *appNameLabel;
+@property (nonatomic, strong) UILabel *priceLabel;
 @property (nonatomic, strong) TOLDeveloperBannerViewFrame *bannerFrame;
 @property (nonatomic, strong) UIImageView *priceTagImageView;
+@property (nonatomic, strong) TOLStarsView *starsView;
 
 @end
 
@@ -81,9 +87,14 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
         self.priceLabel.adjustsFontSizeToFitWidth = YES;
         self.priceLabel.adjustsLetterSpacingToFitWidth = YES;
         self.priceLabel.textColor = [UIColor colorWithRed:0.47 green:0.31 blue:0.12 alpha:1.0];
+
+        UIImage *fullStars = [UIImage imageNamed:@"stars"];
+        UIImage *emptyStars = [UIImage imageNamed:@"stars-empty"];
+        self.starsView = [[TOLStarsView alloc] initWithFullStarsImage:fullStars emptyStars:emptyStars];
         
-        [self addSubview:_appIconImageView];
-        [self addSubview:_appNameLabel];
+        [self addSubview:self.appIconImageView];
+        [self addSubview:self.appNameLabel];
+        [self addSubview:self.starsView];
         [self addSubview:self.bannerFrame];
         [self addSubview:self.priceTagImageView];
         [self.priceTagImageView addSubview:self.priceLabel];
@@ -142,8 +153,50 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
                                        CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap);
     self.bannerFrame.frame = bannerFrameRect;
     
+    self.starsView.center = CGPointMake(CGRectGetWidth(self.frame)
+                                          -CGRectGetWidth(self.priceTagImageView.frame)
+                                          +30.f
+                                          -CGRectGetWidth(self.starsView.frame)/2,
+                                        CGRectGetMaxY(self.appNameLabel.frame)
+                                          +CGRectGetHeight(self.starsView.frame)/2 - 5.f);
+    
     [self setNeedsDisplay];
 
+}
+
+#pragma mark - TOLDeveloperBanner Protocol
+- (void)setPercentage:(CGFloat)percentage{
+    _percentage = percentage;
+    
+    [self.starsView setPercentage:self.percentage];
+}
+
+- (void)setAppName:(NSString *)appName{
+    _appName = appName;
+    
+    self.appNameLabel.text = self.appName;
+}
+
+- (void)setPrice:(NSString *)appPrice{
+    _price = appPrice;
+    
+    self.priceLabel.text = self.price;
+}
+
+- (void)setAppIconImage:(UIImage *)iconImage{
+    _appIconImage = iconImage;
+    
+    self.appIconImageView.image = self.appIconImage;
+}
+
+- (void)setSecondaryColor:(UIColor *)secondaryColor{
+    _secondaryColor = secondaryColor;
+    
+    self.appNameLabel.textColor = self.secondaryColor;
+}
+
+- (CGSize)iconImageSize{
+    return self.appIconImageView.frame.size;
 }
 
 @end

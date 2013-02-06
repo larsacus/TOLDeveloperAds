@@ -130,14 +130,10 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 }
 
 - (void)applyColorsFromSLColors:(SLColorArt *)colorArt toBannerView:(TOLDeveloperBannerView *)bannerView{
-    bannerView.appIconImageView.image = colorArt.scaledImage;
+    bannerView.appIconImage = colorArt.scaledImage;
     bannerView.primaryColor = colorArt.primaryColor;
     
-    bannerView.appNameLabel.textColor = colorArt.secondaryColor;
-    bannerView.appNameLabel.shadowColor = colorArt.backgroundColor;
-    
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
+    bannerView.secondaryColor = colorArt.secondaryColor;
 }
 
 - (void)applyColorsFromLEColorsDictionary:(NSDictionary *)colorsPickedDictionary toBannerView:(TOLDeveloperBannerView *)bannerView{
@@ -146,12 +142,6 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     UIColor *secondaryColor = [colorsPickedDictionary objectForKey:@"SecondaryTextColor"];
     
     bannerView.primaryColor = backgroundColor;
-    
-    bannerView.appNameLabel.textColor = primaryColor;
-    bannerView.appNameLabel.shadowColor = secondaryColor;
-    
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    bannerView.appNameLabel.shadowOffset = CGSizeMake(0.f, -1.f/scale);
 }
 
 - (UIImage *)image:(UIImage *)image resizedToSize:(CGSize)newSize{
@@ -249,18 +239,19 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
              //             SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
              //                                                           scaledSize:imageSize];
              
-             CGSize iconSize = blockSelf.bannerView.appIconImageView.bounds.size;
+             CGSize iconSize = [blockSelf.bannerView iconImageSize];
              UIImage *resizedImage = [self image:image resizedToSize:iconSize];
              
              [LEColorPicker
               pickColorFromImage:image
               onComplete:^(NSDictionary *colorsPickedDictionary) {
                   
-                  blockSelf.bannerView.appNameLabel.text = adInfo[kTOLDevAdsAppKeyName];
-                  blockSelf.bannerView.priceLabel.text = adInfo[kTOLDevAdsAppKeyFormattedPrice];
+                  blockSelf.bannerView.appName = adInfo[kTOLDevAdsAppKeyName];
+                  blockSelf.bannerView.price = adInfo[kTOLDevAdsAppKeyFormattedPrice];
+                  blockSelf.bannerView.percentage = [adInfo[kTOLDevAdsAppKeyAverageRatingCurrentVersion] floatValue]/5.f;
                   //                 [blockSelf applyColorsFromSLColors:colorArt toBannerView:blockSelf.bannerView];
-                  CGSize iconSize = blockSelf.bannerView.appIconImageView.bounds.size;
-                  blockSelf.bannerView.appIconImageView.image = resizedImage;
+                  
+                  blockSelf.bannerView.appIconImage = resizedImage;
                   [blockSelf applyColorsFromLEColorsDictionary:colorsPickedDictionary toBannerView:blockSelf.bannerView];
                   
                   blockSelf.adLoaded = YES;
@@ -504,6 +495,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 #pragma mark - Required TOLAdAdapter Methods
 - (void)layoutBannerForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{
+    self.bannerView.orientation = interfaceOrientation;
     self.bannerView.frame = [self frameForOrientation:interfaceOrientation];
     [self.bannerView setNeedsDisplay];
 }
