@@ -657,7 +657,7 @@ NSString * const kTOLDevAdsMetadataCacheDateKey = @"com.theonlylars.metadataCach
     
     NSString *metadataPath = [self metadataPathForDevId:devId];
     
-    return [mutableMetadata writeToFile:metadataPath atomically:NO];
+    return [mutableMetadata writeToFile:metadataPath atomically:YES];
 }
 
 + (NSString *)imagePathForImageWithURLPath:(NSString *)urlPath{
@@ -686,7 +686,7 @@ NSString * const kTOLDevAdsMetadataCacheDateKey = @"com.theonlylars.metadataCach
     
     NSData *imageData = UIImagePNGRepresentation(image);
     
-    return [imageData writeToFile:imagePath atomically:NO];
+    return [imageData writeToFile:imagePath atomically:YES];
 }
 
 @end

@@ -18,7 +18,8 @@
 {
     //Tapbots: 293642940
     //Electronic Arts: 284800461
-    [[LARSAdController sharedManager] registerAdClass:[TOLDeveloperAds class] withPublisherId:@"293642940"];
+    //Yelp: 284910353
+    [[LARSAdController sharedManager] registerAdClass:[TOLDeveloperAds class] withPublisherId:@"284800461"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
