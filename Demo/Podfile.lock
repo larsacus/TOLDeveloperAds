@@ -2,13 +2,16 @@
 PODS:
 - ColorArt (0.0.6)
 - LARSAdController/Core (3.0.0)
+- NSHash (1.0.1)
 
 DEPENDENCIES:
 - ColorArt
 - LARSAdController/Core (~> 3.0)
+- NSHash
 
 SPEC CHECKSUMS:
   ColorArt: 99d744bd228d77f0dd91db2c82bdcbe42d4e1ad1
   LARSAdController/Core: 9156e065c6ba10f4a88bd35d59b0d9e227d3ec7e
+  NSHash: 08e81b655e7d2e3d9b872c192e52f77b76694918
 
-COCOAPODS: 0.16.0
+COCOAPODS: 0.16.1

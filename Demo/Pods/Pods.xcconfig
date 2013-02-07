@@ -1,7 +1,7 @@
 ALWAYS_SEARCH_USER_PATHS = YES
-OTHER_LDFLAGS = -ObjC -framework CoreGraphics -framework Foundation -framework QuartzCore -framework UIKit
 HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS}
-PODS_ROOT = ${SRCROOT}/Pods
-PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/ColorArt" "${PODS_ROOT}/BuildHeaders/LARSAdController"
-PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/ColorArt" "${PODS_ROOT}/Headers/LARSAdController"
+OTHER_LDFLAGS = -ObjC -framework CoreGraphics -framework Foundation -framework QuartzCore -framework UIKit
+PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/ColorArt" "${PODS_ROOT}/BuildHeaders/LARSAdController" "${PODS_ROOT}/BuildHeaders/NSHash"
 PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
+PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/ColorArt" "${PODS_ROOT}/Headers/LARSAdController" "${PODS_ROOT}/Headers/NSHash"
+PODS_ROOT = ${SRCROOT}/Pods

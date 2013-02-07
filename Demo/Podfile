@@ -2,3 +2,4 @@ platform :ios, '5.0'
 
 pod 'LARSAdController/Core', '~> 3.0'
 pod 'ColorArt'
+pod 'NSHash'

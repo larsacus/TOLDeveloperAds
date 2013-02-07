@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSData+NSHash_AdditionalHashingAlgorithms.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSData(NSHash_AdditionalHashingAlgorithms)</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>NSData+NSHash.h</DeclaredIn>
+			
+			<NodeRef refid="1"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSData(NSHash_AdditionalHashingAlgorithms)/MD5</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>NSData+NSHash.h</DeclaredIn>			
+			
+			<Declaration>- (NSData *)MD5</Declaration>
+			
+			
+			<Anchor>//api/name/MD5</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSData(NSHash_AdditionalHashingAlgorithms)/SHA1</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>NSData+NSHash.h</DeclaredIn>			
+			
+			<Declaration>- (NSData *)SHA1</Declaration>
+			
+			
+			<Anchor>//api/name/SHA1</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSData(NSHash_AdditionalHashingAlgorithms)/SHA256</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>NSData+NSHash.h</DeclaredIn>			
+			
+			<Declaration>- (NSData *)SHA256</Declaration>
+			
+			
+			<Anchor>//api/name/SHA256</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

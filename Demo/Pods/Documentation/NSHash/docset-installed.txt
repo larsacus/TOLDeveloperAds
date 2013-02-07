@@ -1,0 +1,4 @@
+Documentation set was installed to Xcode!
+
+Path: /Users/lars/Library/Developer/Shared/Documentation/DocSets/org.cocoapods.NSHash-1.0.1.docset
+Time: 2013-02-07 03:04:07 +0000
