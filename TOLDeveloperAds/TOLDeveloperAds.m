@@ -10,6 +10,7 @@
 
 #import "TOLDeveloperAds.h"
 #import "LARSAdController.h"
+#import <NSHash/NSString+NSHash.h>
 
 #import "SLColorArt.h"
 #import "LEColorPicker.h"
@@ -38,6 +39,17 @@ static NSString * const kTOLDevAdsAppKindMacSoftware = @"mac-software";
 static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 #define isGiraffeScreen ([[UIScreen mainScreen] bounds].size.height == 568.f)
+
+@interface TOLDevAdsCacheManager : NSObject
+
++ (NSString *)cacheDirectoryPath;
++ (NSString *)metadataPathForDevId:(NSString *)devId;
++ (NSDictionary *)cachedMetadataForDevId:(NSString *)devId;
++ (BOOL)cacheMetadata:(NSDictionary *)metadata forDevId:(NSString *)devId;
++ (UIImage *)cachedImageForImageURLPath:(NSString *)urlPath;
++ (BOOL)cacheImage:(UIImage *)image withPath:(NSString *)urlPath;
+
+@end
 
 @interface TOLDeveloperAds () <NSURLConnectionDataDelegate>
 
@@ -328,69 +340,85 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     
     [request setAllHTTPHeaderFields:headerFields];
     
-    [NSURLConnection
-     sendAsynchronousRequest:request
-     queue:[NSOperationQueue mainQueue]
-     completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-         if (error != nil){
-             if(failBlock != nil) {
-                 //Something bad happened during fetch - bail and report
-                 failBlock(error);
+    NSDictionary *cachedMetadata = [TOLDevAdsCacheManager cachedMetadataForDevId:self.publisherId];
+    if (cachedMetadata != nil) {
+        [self populateAppListFromMetadata:cachedMetadata];
+        
+        if (successBlock) {
+            successBlock();
+        }
+    }
+    else{
+        [NSURLConnection
+         sendAsynchronousRequest:request
+         queue:[NSOperationQueue mainQueue]
+         completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+             if (error != nil){
+                 if(failBlock != nil) {
+                     //Something bad happened during fetch - bail and report
+                     failBlock(error);
+                 }
+                 return;
              }
-             return;
-         }
-         
-         NSError *jsonReadingError = nil;
-         NSDictionary *metadata = [NSJSONSerialization
-                                   JSONObjectWithData:data
-                                   options:NSJSONReadingAllowFragments
-                                   error:&jsonReadingError];
-         
-         if ((jsonReadingError != nil)) {
-             if ((failBlock != nil)) {
-                 //something else bad happened during parse - bail and report
-                 failBlock(jsonReadingError);
-             }
-             return;
-         }
-         
-         NSArray *objects = metadata[kTOLDevAdsResponseKeyResults];
-         NSMutableArray *apps = [NSMutableArray array];
-         NSString *currentBundleID = [[NSBundle mainBundle] bundleIdentifier];
-         
-         //artist should be first, but just in case
-         for (NSDictionary *object in objects) {
-             NSString *objectBundleId = object[kTOLDevAdsAppKeyBundleId];
-             NSString *objectKind = object[kTOLDevAdsAppKeyKind];
-             NSString *wrapperType = object[kTOLDevAdsWrapperKeyWrapperType];
              
-             BOOL isMacSoftware = [objectKind isEqualToString:kTOLDevAdsAppKindMacSoftware];
-             BOOL isCurrentApp = [objectBundleId isEqualToString:currentBundleID];
-             BOOL isArtist = [wrapperType isEqualToString:kTOLDevAdsWrapperTypeValueArtist];
+             NSError *jsonReadingError = nil;
+             NSDictionary *metadata = [NSJSONSerialization
+                                       JSONObjectWithData:data
+                                       options:NSJSONReadingAllowFragments
+                                       error:&jsonReadingError];
              
-             if (isArtist) {
-                 self.developerMeta = object;
+             if ((jsonReadingError != nil)) {
+                 if ((failBlock != nil)) {
+                     //something else bad happened during parse - bail and report
+                     failBlock(jsonReadingError);
+                 }
+                 return;
              }
-             else if((isCurrentApp == NO) &&
-                     (isMacSoftware == NO)){
-                 [apps addObject:object];
+             
+             [TOLDevAdsCacheManager cacheMetadata:metadata forDevId:self.publisherId];
+             
+             [self populateAppListFromMetadata:metadata];
+             
+             if (successBlock) {
+                 successBlock();
              }
-             else if(isMacSoftware){
-                 NSLog(@"Skipping mac app with bundle ID %@", objectBundleId);
-             }
-         }
-         
-         NSAssert(self.developerMeta != nil, @"Artist data is still nil after fetch!");
-         
-         self.metadataTimestamp = [NSDate date];
-         self.developerApps = apps;
-         
-         [self refreshAdIndex];
-         
-         if (successBlock) {
-             successBlock();
-         }
-     }];
+         }];
+    }
+}
+
+- (void)populateAppListFromMetadata:(NSDictionary *)metadata{
+    NSArray *objects = metadata[kTOLDevAdsResponseKeyResults];
+    NSMutableArray *apps = [NSMutableArray array];
+    NSString *currentBundleID = [[NSBundle mainBundle] bundleIdentifier];
+    
+    //artist should be first, but just in case
+    for (NSDictionary *object in objects) {
+        NSString *objectBundleId = object[kTOLDevAdsAppKeyBundleId];
+        NSString *objectKind = object[kTOLDevAdsAppKeyKind];
+        NSString *wrapperType = object[kTOLDevAdsWrapperKeyWrapperType];
+        
+        BOOL isMacSoftware = [objectKind isEqualToString:kTOLDevAdsAppKindMacSoftware];
+        BOOL isCurrentApp = [objectBundleId isEqualToString:currentBundleID];
+        BOOL isArtist = [wrapperType isEqualToString:kTOLDevAdsWrapperTypeValueArtist];
+        
+        if (isArtist) {
+            self.developerMeta = object;
+        }
+        else if((isCurrentApp == NO) &&
+                (isMacSoftware == NO)){
+            [apps addObject:object];
+        }
+        else if(isMacSoftware){
+            NSLog(@"Skipping mac app with bundle ID %@", objectBundleId);
+        }
+    }
+    
+    NSAssert(self.developerMeta != nil, @"Artist data is still nil after fetch!");
+    
+    self.metadataTimestamp = [NSDate date];
+    self.developerApps = apps;
+    
+    [self refreshAdIndex];
 }
 
 - (void)fetchImageWithPath:(NSString *)imagePath
@@ -417,39 +445,20 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     NSOperationQueue *imageQueue = [[NSOperationQueue alloc] init];
     imageQueue.name = @"com.theonlylars.imagequeue";
     
-    [NSURLConnection
-     sendAsynchronousRequest:request
-     queue:imageQueue
-     completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-         
-         if (error != nil) {
-             if (failBlock != nil) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     failBlock(error);
-                 });
-             }
-             return;
-         }
-         
-         if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-             NSUInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-             NSRange successRange = NSMakeRange(200, 99);
-             NSIndexSet *successSet = [NSIndexSet indexSetWithIndexesInRange:successRange];
+    UIImage *cachedImage = [TOLDevAdsCacheManager cachedImageForImageURLPath:imagePath];
+    
+    if ((cachedImage != nil) &&
+        (successBlock != nil)) {
+        successBlock(cachedImage);
+    }
+    else{
+        [NSURLConnection
+         sendAsynchronousRequest:request
+         queue:imageQueue
+         completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
              
-             if ((error != nil) ||
-                 ([successSet containsIndex:statusCode] == NO)) {
-                 if (failBlock) {
-                     if (error == nil) {
-                         NSString *errorDescriptionString = [NSString stringWithFormat:@"Image fetch returned a non-successful status code (%i) for image path: %@", statusCode, response.URL.absoluteString];
-                         NSDictionary *userInfo = @{
-                             NSLocalizedDescriptionKey : errorDescriptionString
-                         };
-                         
-                         error = [NSError errorWithDomain:@"com.theonlylars.DevAds"
-                                                     code:statusCode
-                                                 userInfo:userInfo];
-                     }
-                     
+             if (error != nil) {
+                 if (failBlock != nil) {
                      dispatch_async(dispatch_get_main_queue(), ^{
                          failBlock(error);
                      });
@@ -457,16 +466,45 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
                  return;
              }
              
-             //should have a successful image fetch here
-             UIImage *image = [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
-             
-             if (successBlock) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     successBlock(image);
-                 });
+             if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+                 NSUInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+                 NSRange successRange = NSMakeRange(200, 99);
+                 NSIndexSet *successSet = [NSIndexSet indexSetWithIndexesInRange:successRange];
+                 
+                 if ((error != nil) ||
+                     ([successSet containsIndex:statusCode] == NO)) {
+                     if (failBlock) {
+                         if (error == nil) {
+                             NSString *errorDescriptionString = [NSString stringWithFormat:@"Image fetch returned a non-successful status code (%i) for image path: %@", statusCode, response.URL.absoluteString];
+                             NSDictionary *userInfo = @{
+                                                        NSLocalizedDescriptionKey : errorDescriptionString
+                                                        };
+                             
+                             error = [NSError errorWithDomain:@"com.theonlylars.DevAds"
+                                                         code:statusCode
+                                                     userInfo:userInfo];
+                         }
+                         
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             failBlock(error);
+                         });
+                     }
+                     return;
+                 }
+                 
+                 //should have a successful image fetch here
+                 UIImage *image = [UIImage imageWithData:data scale:[UIScreen mainScreen].scale];
+                 
+                 [TOLDevAdsCacheManager cacheImage:image withPath:imagePath];
+                 
+                 if (successBlock) {
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         successBlock(image);
+                     });
+                 }
              }
-         }
-     }];
+         }];
+    }
 }
 
 - (void)refreshAdIndex{
@@ -559,6 +597,96 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     [self.adIndex removeAllIndexes], self.adIndex = nil;
     self.developerMeta = nil;
     self.metadataTimestamp = nil;
+}
+
+@end
+
+#pragma mark - Cache Manager
+
+NSString * const kTOLDevAdsMetadataCacheDateKey = @"com.theonlylars.metadataCacheDate";
+
+@implementation TOLDevAdsCacheManager
+
++ (NSString *)cacheDirectoryPath{
+    NSString *systemCachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    
+    NSString *cachesPath = [systemCachePath stringByAppendingPathComponent:@"com.theonlylars.dev-ads"];
+    
+    BOOL pathIsDirectory;
+    if([[NSFileManager defaultManager] fileExistsAtPath:cachesPath isDirectory:&pathIsDirectory]){
+        if (pathIsDirectory) {
+            return cachesPath;
+        }
+    }
+    else if([[NSFileManager defaultManager] createDirectoryAtPath:cachesPath withIntermediateDirectories:YES attributes:nil error:nil]){
+        //directory created
+        return cachesPath;
+    }
+    
+    return nil;
+}
+
++ (NSString *)metadataPathForDevId:(NSString *)devId{
+    NSString *cacheDirectory = [self cacheDirectoryPath];
+    NSString *plistName = [NSString stringWithFormat:@"%@.plist", devId];
+    NSString *metadataPath = [cacheDirectory stringByAppendingPathComponent:plistName];
+    
+    return metadataPath;
+}
+
++ (NSDictionary *)cachedMetadataForDevId:(NSString *)devId{
+    
+    NSString *metadataPath = [self metadataPathForDevId:devId];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if ([fileManager fileExistsAtPath:metadataPath]) {
+        NSDictionary *cachedMetadata = [NSDictionary dictionaryWithContentsOfFile:metadataPath];
+        NSDate *cacheDate = cachedMetadata[kTOLDevAdsMetadataCacheDateKey];
+        if ([cacheDate timeIntervalSinceNow] > -kTOLDevAdsSecondsInDay) {
+            return cachedMetadata;
+        }
+    }
+    
+    return nil;
+}
+
++ (BOOL)cacheMetadata:(NSDictionary *)metadata forDevId:(NSString *)devId{
+    NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
+    mutableMetadata[kTOLDevAdsMetadataCacheDateKey] = [NSDate date];
+    
+    NSString *metadataPath = [self metadataPathForDevId:devId];
+    
+    return [mutableMetadata writeToFile:metadataPath atomically:NO];
+}
+
++ (NSString *)imagePathForImageWithURLPath:(NSString *)urlPath{
+    NSString *cachesDirectoryPath = [self cacheDirectoryPath];
+    
+    NSString *cachedImageName = [[urlPath MD5] stringByAppendingPathExtension:@"png"];
+    NSString *fullImagePath = [cachesDirectoryPath stringByAppendingPathComponent:cachedImageName];
+    
+    return fullImagePath;
+}
+
++ (UIImage *)cachedImageForImageURLPath:(NSString *)urlPath{
+    NSString *fullImagePath = [self imagePathForImageWithURLPath:urlPath];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if ([fileManager fileExistsAtPath:fullImagePath]) {
+        UIImage *cachedImage = [UIImage imageWithContentsOfFile:fullImagePath];
+        return cachedImage;
+    }
+    
+    return nil;
+}
+
++ (BOOL)cacheImage:(UIImage *)image withPath:(NSString *)urlPath{
+    NSString *imagePath = [self imagePathForImageWithURLPath:urlPath];
+    
+    NSData *imageData = UIImagePNGRepresentation(image);
+    
+    return [imageData writeToFile:imagePath atomically:NO];
 }
 
 @end
