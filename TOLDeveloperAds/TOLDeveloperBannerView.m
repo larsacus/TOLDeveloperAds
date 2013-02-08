@@ -101,6 +101,9 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
         
         self.backgroundColor = [UIColor clearColor];
         self.primaryColor = [UIColor redColor];
+        
+        [self setNeedsDisplay];
+        [self setNeedsLayout];
     }
     return self;
 }
@@ -196,6 +199,10 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
 }
 
 - (CGSize)iconImageSize{
+    if (CGRectEqualToRect(self.appIconImageView.frame, CGRectZero)) {
+        [self setNeedsLayout];
+        [self layoutIfNeeded];
+    }
     return self.appIconImageView.frame.size;
 }
 

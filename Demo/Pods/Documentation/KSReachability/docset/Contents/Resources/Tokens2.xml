@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/KSReachableOperation.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/KSReachableOperation</TokenIdentifier>
+			<Abstract>A one-time operation to perform as soon as a host is deemed reachable.
+The operation will only be performed once, regardless of how many times a
+host becomes reachable.</Abstract>
+			<DeclaredIn>KSReachability.h</DeclaredIn>
+			
+			<NodeRef refid="2"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/KSReachableOperation/operationWithHost:allowWWAN:block:</TokenIdentifier>
+			<Abstract>Constructor.</Abstract>
+			<DeclaredIn>KSReachability.h</DeclaredIn>			
+			
+			<Declaration>+ (KSReachableOperation *)operationWithHost:(NSString *)hostname allowWWAN:(BOOL)allowWWAN block:(void ( ^ ) ( ))block</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>hostname</Name>
+					<Abstract>The name or IP address of the host to monitor. If nil or
+empty string, check reachability to the internet in general.
+If hostname is a URL string, it will use the host portion.</Abstract>
+				</Parameter><Parameter>
+					<Name>allowWWAN</Name>
+					<Abstract>If NO, a WWAN-only connection is not enough to trigger
+this operation.</Abstract>
+				</Parameter><Parameter>
+					<Name>block</Name>
+					<Abstract>The block to invoke when the host becomes reachable.
+Block will be invoked on the main thread.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/operationWithHost:allowWWAN:block:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/KSReachableOperation/initWithHost:allowWWAN:block:</TokenIdentifier>
+			<Abstract>Constructor.</Abstract>
+			<DeclaredIn>KSReachability.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithHost:(NSString *)hostname allowWWAN:(BOOL)allowWWAN block:(void ( ^ ) ( ))block</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>hostname</Name>
+					<Abstract>The name or IP address of the host to monitor. If nil or
+empty string, check reachability to the internet in general.
+If hostname is a URL string, it will use the host portion.</Abstract>
+				</Parameter><Parameter>
+					<Name>allowWWAN</Name>
+					<Abstract>If NO, a WWAN-only connection is not enough to trigger
+this operation.</Abstract>
+				</Parameter><Parameter>
+					<Name>block</Name>
+					<Abstract>The block to invoke when the host becomes reachable.
+Block will be invoked on the main thread.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/initWithHost:allowWWAN:block:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

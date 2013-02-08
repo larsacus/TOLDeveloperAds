@@ -11,6 +11,7 @@
 #import "TOLDeveloperAds.h"
 #import "LARSAdController.h"
 #import <NSHash/NSString+NSHash.h>
+#import <Reachability/Reachability.h>
 
 #import "SLColorArt.h"
 #import "LEColorPicker.h"
@@ -22,7 +23,9 @@ static NSTimeInterval const kTOLDevAdsSecondsInDay = 86400;
 
 /** keys for track metadata */
 static NSString * const kTOLDevAdsAppKeyArtistName = @"artistName";
-static NSString * const kTOLDevAdsAppKeyIconURL = @"artworkUrl100"; //options are 60, 100, 512
+static NSString * const kTOLDevAdsAppKeyIconURL60 = @"artworkUrl60"; //options are 60, 100, 512
+static NSString * const kTOLDevAdsAppKeyIconURL100 = @"artworkUrl100";
+static NSString * const kTOLDevAdsAppKeyIconURL512 = @"artworkUrl512";
 static NSString * const kTOLDevAdsAppKeyAverageRatingCurrentVersion = @"averageUserRatingForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyBundleId = @"bundleId";
 static NSString * const kTOLDevAdsAppKeyFormattedPrice = @"formattedPrice";
@@ -48,6 +51,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 + (BOOL)cacheMetadata:(NSDictionary *)metadata forDevId:(NSString *)devId;
 + (UIImage *)cachedImageForImageURLPath:(NSString *)urlPath;
 + (BOOL)cacheImage:(UIImage *)image withPath:(NSString *)urlPath;
++ (BOOL)isImageCachedAtURLPath:(NSString *)urlPath;
 
 @end
 
@@ -62,6 +66,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 @property (nonatomic, readwrite) BOOL adLoaded;
 @property (nonatomic, getter = isAdLoading) BOOL adLoading;
 @property (nonatomic, strong) UIImageView *frameImageView;
+@property (nonatomic, strong) Reachability *reachability;
 
 @end
 
@@ -180,6 +185,15 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     return newUIImage;
 }
 
+#pragma mark - Property Overrides
+- (Reachability *)reachability{
+    if (_reachability == nil) {
+        _reachability = [Reachability reachabilityForInternetConnection];
+        [_reachability startNotifier];
+    }
+    return _reachability;
+}
+
 #pragma mark - Frame
 - (CGRect)frameForCurrentOrientation{
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
@@ -233,7 +247,32 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 - (void)populateBannerWithInfo:(NSDictionary *)adInfo completion:(void(^)(void))completionBlock{
     
-    NSString *imageURLString = adInfo[kTOLDevAdsAppKeyIconURL];
+    NSString *imageURLString = adInfo[kTOLDevAdsAppKeyIconURL60];
+    NSString *imageURL100 = adInfo[kTOLDevAdsAppKeyIconURL100];
+    NSString *imageURL512 = adInfo[kTOLDevAdsAppKeyIconURL512];
+    
+    if (self.reachability.isReachableViaWiFi == NO) {
+        
+        BOOL has512Image = [TOLDevAdsCacheManager isImageCachedAtURLPath:imageURL512];
+        
+        if (has512Image) {
+            TOLLog(@"On WWAN, but have cached image, using larger cached image");
+            imageURLString = imageURL512;
+        }
+        //revert to small images when possible on cell connections
+        else if ([imageURL100 isEqualToString:imageURL512] == NO) {
+            TOLLog(@"Using available 100x100 image on WWAN");
+            imageURLString = imageURL100;
+        }
+        else{
+            TOLLog(@"No 100x100 or cached 512x512 image - reverting to fetching smallest image");
+        }
+    }
+    else{
+        TOLLog(@"Reachable via Wifi - Using larger images");
+        //we can use larger images on WiFi
+        imageURLString = imageURL512;
+    }
     
     typeof(self) __weak weakSelf = self;
 
@@ -281,7 +320,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
          
 //         dispatch_release(image_processing_queue);
      } failBlock:^(NSError *error) {
-         NSLog(@"Error fetching image: %@", error.localizedDescription);
+         TOLWLog(@"Error fetching image: %@", error.localizedDescription);
          typeof(weakSelf) blockSelf = weakSelf;
          
          blockSelf.adLoading = NO;
@@ -409,7 +448,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
             [apps addObject:object];
         }
         else if(isMacSoftware){
-            NSLog(@"Skipping mac app with bundle ID %@", objectBundleId);
+            TOLWLog(@"Skipping mac app with bundle ID %@", objectBundleId);
         }
     }
     
@@ -679,6 +718,13 @@ NSString * const kTOLDevAdsMetadataCacheDateKey = @"com.theonlylars.metadataCach
     }
     
     return nil;
+}
+
++ (BOOL)isImageCachedAtURLPath:(NSString *)urlPath{
+    NSString *fullImagePath = [self imagePathForImageWithURLPath:urlPath];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    return [fileManager fileExistsAtPath:fullImagePath];
 }
 
 + (BOOL)cacheImage:(UIImage *)image withPath:(NSString *)urlPath{
