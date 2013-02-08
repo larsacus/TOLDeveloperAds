@@ -141,27 +141,48 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
                                   iconHeight);
     self.appIconImageView.frame = iconFrame;
     
-    CGFloat appNameHeight = CGRectGetHeight(frame)/3;
-    CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
-                                     margin*2,
-                                     CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-20.f,
-                                     appNameHeight);
-//    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
-//    self.appNameLabel.layer.borderWidth = 1.f;
-    self.appNameLabel.frame = appNameFrame;
+    
     
     CGRect bannerFrameRect = CGRectMake(0.f,
-                                       kTOLDeveloperBannerViewFrameGap,
-                                       CGRectGetWidth(self.frame),
-                                       CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap);
+                                        kTOLDeveloperBannerViewFrameGap,
+                                        CGRectGetWidth(self.frame),
+                                        CGRectGetHeight(self.frame)-kTOLDeveloperBannerViewFrameGap);
     self.bannerFrame.frame = bannerFrameRect;
     
-    self.starsView.center = CGPointMake(CGRectGetWidth(self.frame)
-                                          -CGRectGetWidth(self.priceTagImageView.frame)
-                                          +30.f
-                                          -CGRectGetWidth(self.starsView.frame)/2,
-                                        CGRectGetMaxY(self.appNameLabel.frame)
-                                          +CGRectGetHeight(self.starsView.frame)/2 - 5.f);
+    if (UIInterfaceOrientationIsLandscape(self.orientation)) {
+        //landscape
+        CGFloat appNameHeight = CGRectGetHeight(frame)/2;
+        CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
+                                         CGRectGetHeight(self.frame)/2-appNameHeight/2,
+                                         CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-75.f,
+                                         appNameHeight);
+//        //    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
+//        //    self.appNameLabel.layer.borderWidth = 1.f;
+        self.appNameLabel.frame = appNameFrame;
+        
+        self.starsView.center = CGPointMake(CGRectGetMinX(self.priceTagImageView.frame)
+                                              +10.f
+                                              -CGRectGetWidth(self.starsView.frame)/2,
+                                            CGRectGetHeight(self.frame)/2);
+    }
+    else{
+        //portrait
+        CGFloat appNameHeight = CGRectGetHeight(frame)/2;
+        CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
+                                         margin*2,
+                                         CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-20.f,
+                                         appNameHeight);
+        //    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
+        //    self.appNameLabel.layer.borderWidth = 1.f;
+        self.appNameLabel.frame = appNameFrame;
+        
+        self.starsView.center = CGPointMake(CGRectGetWidth(self.frame)
+                                            -CGRectGetWidth(self.priceTagImageView.frame)
+                                            +30.f
+                                            -CGRectGetWidth(self.starsView.frame)/2,
+                                            CGRectGetMaxY(self.appNameLabel.frame)
+                                            +CGRectGetHeight(self.starsView.frame)/2 - 5.f);
+    }
     
     [self setNeedsDisplay];
 
