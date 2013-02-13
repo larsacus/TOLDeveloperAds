@@ -12,7 +12,7 @@
 #import "TOLStarsView.h"
 
 /** portrait constants */
-CGFloat const kTOLDeveloperBannerViewPadHeightPortrait = 90.f;
+CGFloat const kTOLDeveloperBannerViewPadHeightPortrait = 65.f;
 CGFloat const kTOLDeveloperBannerViewPodHeightPortrait = 50.f;
 CGFloat const kTOLDeveloperBannerViewPadWidthPortrait = 768.f;
 CGFloat const kTOLDeveloperBannerViewPodWidthPortrait = 320.f;
@@ -55,7 +55,6 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
         self.appNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.appNameLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
         self.appNameLabel.backgroundColor = [UIColor clearColor];
-        self.appNameLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:12.f];
         
         self.appIconImageView.layer.cornerRadius = 5.f;
         self.appIconImageView.clipsToBounds = YES;
@@ -81,16 +80,26 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
                                                                     labelHeight)];
 
         self.priceLabel.transform = CGAffineTransformMakeRotation(M_PI_4);
-        self.priceLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:13.f];
+        
         self.priceLabel.textAlignment = UITextAlignmentCenter;
         self.priceLabel.backgroundColor = [UIColor clearColor];
         self.priceLabel.adjustsFontSizeToFitWidth = YES;
         self.priceLabel.adjustsLetterSpacingToFitWidth = YES;
         self.priceLabel.textColor = [UIColor colorWithRed:0.47 green:0.31 blue:0.12 alpha:1.0];
+        self.priceLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:13.f];
 
         UIImage *fullStars = [UIImage imageNamed:@"stars"];
         UIImage *emptyStars = [UIImage imageNamed:@"stars-empty"];
         self.starsView = [[TOLStarsView alloc] initWithFullStarsImage:fullStars emptyStars:emptyStars];
+        
+        
+        if ([[UIDevice currentDevice] userInterfaceIdiom]  == UIUserInterfaceIdiomPad) {
+            self.appNameLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:22.f];
+        }
+        else{
+            //pod
+            self.appNameLabel.font = [UIFont fontWithName:@"AvenirNext-DemiBold" size:12.f];
+        }
         
         [self addSubview:self.appIconImageView];
         [self addSubview:self.appNameLabel];
@@ -101,9 +110,6 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
         
         self.backgroundColor = [UIColor clearColor];
         self.primaryColor = [UIColor redColor];
-        
-        [self setNeedsDisplay];
-        [self setNeedsLayout];
     }
     return self;
 }
@@ -152,13 +158,13 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
     if (UIInterfaceOrientationIsLandscape(self.orientation)) {
         //landscape
         CGFloat appNameHeight = CGRectGetHeight(frame)/2;
-        CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
+        CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 20.f,
                                          CGRectGetHeight(self.frame)/2-appNameHeight/2,
                                          CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-75.f,
                                          appNameHeight);
-//        //    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
-//        //    self.appNameLabel.layer.borderWidth = 1.f;
-        self.appNameLabel.frame = appNameFrame;
+//        self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
+//        self.appNameLabel.layer.borderWidth = 1.f;
+        self.appNameLabel.frame = CGRectIntegral(appNameFrame);
         
         self.starsView.center = CGPointMake(CGRectGetMinX(self.priceTagImageView.frame)
                                               +10.f
@@ -167,25 +173,27 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
     }
     else{
         //portrait
-        CGFloat appNameHeight = CGRectGetHeight(frame)/2;
+        CGFloat appNameHeight = CGRectGetHeight(frame)/3;
         CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
                                          margin*2,
-                                         CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-20.f,
+                                         CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame) - 20.f,
                                          appNameHeight);
-        //    self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
-        //    self.appNameLabel.layer.borderWidth = 1.f;
-        self.appNameLabel.frame = appNameFrame;
+//        self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
+//        self.appNameLabel.layer.borderWidth = 1.f;
+        self.appNameLabel.frame = CGRectIntegral(appNameFrame);
         
         self.starsView.center = CGPointMake(CGRectGetWidth(self.frame)
                                             -CGRectGetWidth(self.priceTagImageView.frame)
-                                            +30.f
+                                            +20.f
                                             -CGRectGetWidth(self.starsView.frame)/2,
-                                            CGRectGetMaxY(self.appNameLabel.frame)
-                                            +CGRectGetHeight(self.starsView.frame)/2 - 5.f);
+                                            CGRectGetHeight(self.frame)-CGRectGetHeight(self.starsView.frame)/2 - 8.f);
+//                                            CGRectGetMaxY(self.appNameLabel.frame)
+//                                            +CGRectGetHeight(self.starsView.frame)/2 - 5.f);
     }
     
+    self.starsView.frame = CGRectIntegral(self.starsView.frame);
+    
     [self setNeedsDisplay];
-
 }
 
 #pragma mark - TOLDeveloperBanner Protocol
