@@ -158,8 +158,8 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
     if (UIInterfaceOrientationIsLandscape(self.orientation)) {
         //landscape
         CGFloat appNameHeight = CGRectGetHeight(frame)/2;
-        CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 20.f,
-                                         CGRectGetHeight(self.frame)/2-appNameHeight/2,
+        CGRect appNameFrame = CGRectMake(CGRectGetMaxX(iconFrame) + 10.f,
+                                         CGRectGetHeight(self.frame)/2-appNameHeight/2 + 1.f,
                                          CGRectGetWidth(frame)-CGRectGetMaxX(iconFrame)-75.f,
                                          appNameHeight);
 //        self.appNameLabel.layer.borderColor = [UIColor redColor].CGColor;
@@ -225,6 +225,12 @@ CGFloat const kTOLDeveloperBannerViewFrameGap = 1.f;
     _secondaryColor = secondaryColor;
     
     self.appNameLabel.textColor = self.secondaryColor;
+}
+
+- (void)setPrimaryColor:(UIColor *)primaryColor{
+    _primaryColor = primaryColor;
+    
+    [self setNeedsDisplay];
 }
 
 - (CGSize)iconImageSize{

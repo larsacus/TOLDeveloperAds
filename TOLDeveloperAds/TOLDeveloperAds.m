@@ -13,7 +13,6 @@
 #import <NSHash/NSString+NSHash.h>
 #import <Reachability/Reachability.h>
 
-#import "SLColorArt.h"
 #import "LEColorPicker.h"
 
 static NSString * const kTOLDevAdsBaseURL = @"https://itunes.apple.com";
@@ -146,19 +145,14 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     return arc4random_uniform(lessThan);
 }
 
-- (void)applyColorsFromSLColors:(SLColorArt *)colorArt toBannerView:(TOLDeveloperBannerView *)bannerView{
-    bannerView.appIconImage = colorArt.scaledImage;
-    bannerView.primaryColor = colorArt.primaryColor;
-    
-    bannerView.secondaryColor = colorArt.secondaryColor;
-}
-
-- (void)applyColorsFromLEColorsDictionary:(NSDictionary *)colorsPickedDictionary toBannerView:(TOLDeveloperBannerView *)bannerView{
+- (void)applyColorsFromLEColorsDictionary:(NSDictionary *)colorsPickedDictionary
+                             toBannerView:(TOLDeveloperBannerView *)bannerView{
     UIColor *backgroundColor = [colorsPickedDictionary objectForKey:@"BackgroundColor"];
     UIColor *primaryColor = [colorsPickedDictionary objectForKey:@"PrimaryTextColor"];
-    UIColor *secondaryColor = [colorsPickedDictionary objectForKey:@"SecondaryTextColor"];
+//    UIColor *secondaryColor = [colorsPickedDictionary objectForKey:@"SecondaryTextColor"];
     
     bannerView.primaryColor = backgroundColor;
+    bannerView.secondaryColor = primaryColor;
 }
 
 - (UIImage *)image:(UIImage *)image resizedToSize:(CGSize)newSize{
@@ -285,11 +279,6 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
          dispatch_async(image_processing_queue, ^{
              typeof(weakSelf) blockSelf = weakSelf;
              
-             //             CGSize imageSize = blockSelf.bannerView.appIconImageView.bounds.size;
-             
-             //             SLColorArt *colorArt = [[SLColorArt alloc] initWithImage:image
-             //                                                           scaledSize:imageSize];
-             
              CGSize iconSize = [blockSelf.bannerView iconImageSize];
              UIImage *resizedImage = [self image:image resizedToSize:iconSize];
              
@@ -300,7 +289,6 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
                   blockSelf.bannerView.appName = adInfo[kTOLDevAdsAppKeyName];
                   blockSelf.bannerView.price = adInfo[kTOLDevAdsAppKeyFormattedPrice];
                   blockSelf.bannerView.percentage = [adInfo[kTOLDevAdsAppKeyAverageRatingCurrentVersion] floatValue]/5.f;
-                  //                 [blockSelf applyColorsFromSLColors:colorArt toBannerView:blockSelf.bannerView];
                   
                   blockSelf.bannerView.appIconImage = resizedImage;
                   [blockSelf applyColorsFromLEColorsDictionary:colorsPickedDictionary toBannerView:blockSelf.bannerView];
