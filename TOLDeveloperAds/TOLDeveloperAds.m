@@ -347,8 +347,8 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     NSDictionary *params = @{
         @"id" : self.publisherId,
         @"entity":@"software",
-        @"lang":languageCode,
-        @"country": countryCode
+        @"lang":languageCode != nil ? languageCode : @"en",
+        @"country": countryCode != nil ? countryCode : @"US"
     };
     
     NSString *paramsString = [self urlEncodedParamsForDictionary:params];
