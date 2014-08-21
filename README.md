@@ -36,8 +36,8 @@ pod 'LARSAdController/Core', '~>3.0'
 The other following dependencies are *currently* required (but may not be when development stabilizes for release):
 
 ``` ruby
-pod 'ColorArt'
-pod 'NSHash'
+pod 'LEColorPicker', '~>1.0'
+pod 'NSHash', '~>1.0'
 pod 'Reachability', '~>3.1'
 ```
 
@@ -48,7 +48,7 @@ Features of TOLDeveloperAds include:
 
 1. Beautiful enough to include in even your *non* ad-enabled apps, maybe in a settings screen or on your "about" section
 2. Free ads for all of your other apps
-3. Link directly to App Store on tap
+3. Link directly in-app StoreKit view controller, fallback to web link on tap
 4. Customizable ad view by conforming your banner to `TOLDeveloperBannerProtocol` if you don't like the provided banner
 5. Intelligent image caching and image downloading depending on connection to reduce user bandwidth
 6. Auto-exclusion of current app running to not waste banner time
@@ -56,7 +56,7 @@ Features of TOLDeveloperAds include:
 7. Leverages all the great features of [LARSAdController](http://larsacus.github.com/LARSAdController) to integrate your existing ads if you have them. Never have unfilled ad inventory again.
 
 #MIT License
-Copyright (c) 2013 Lars Anderson, theonlylars
+Copyright (c) 2014 Lars Anderson, theonlylars
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

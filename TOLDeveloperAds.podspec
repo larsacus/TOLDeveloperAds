@@ -15,5 +15,10 @@ Pod::Spec.new do |s|
   s.license = 'MIT'
   s.requires_arc = true
   s.frameworks = 'CoreGraphics', 'StoreKit'
+  
   s.dependency 'LARSAdController', '~>3.0'
+  s.dependency 'LEColorPicker', '~>1.0'
+  s.dependency 'NSHash', '~>1.0'
+  s.dependency 'Reachability', '~>3.1'
+  
 end
