@@ -1,20 +1,19 @@
-
 PODS:
-- ColorArt (0.0.6)
-- LARSAdController/Core (3.0.2)
-- NSHash (1.0.1)
-- Reachability (3.1.0)
+  - LARSAdController/Core (3.0.5)
+  - LEColorPicker (1.0.3)
+  - NSHash (1.0.1)
+  - Reachability (3.1.1)
 
 DEPENDENCIES:
-- ColorArt
-- LARSAdController/Core (~> 3.0)
-- NSHash
-- Reachability (~> 3.1)
+  - LARSAdController/Core (~> 3.0)
+  - LEColorPicker
+  - NSHash
+  - Reachability (~> 3.1)
 
 SPEC CHECKSUMS:
-  ColorArt: 99d744bd228d77f0dd91db2c82bdcbe42d4e1ad1
-  LARSAdController/Core: e1315b73aa332b94a0fd21788fcdd630e7242a23
-  NSHash: 08e81b655e7d2e3d9b872c192e52f77b76694918
-  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  LARSAdController: d4d8ac28441cccadb7278d59a173a7602e5d04a2
+  LEColorPicker: cd557bb4a723a7f44d96573b214a0787b640acda
+  NSHash: 757e3ba784954b730eae472f3f4e12eb79a18d82
+  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
 
-COCOAPODS: 0.16.2
+COCOAPODS: 0.33.1

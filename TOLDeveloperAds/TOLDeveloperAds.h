@@ -17,6 +17,7 @@
 @property (weak, nonatomic) id <LARSAdControllerDelegate> adManager;
 @property (copy, nonatomic) NSString *publisherId;
 @property (nonatomic, readonly) BOOL adLoaded;
+@property (weak, nonatomic) UIViewController *parentViewController;
 
 - (void)layoutBannerForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 

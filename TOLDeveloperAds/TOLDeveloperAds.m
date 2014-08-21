@@ -10,10 +10,12 @@
 
 #import "TOLDeveloperAds.h"
 #import "LARSAdController.h"
+
+#import <StoreKit/StoreKit.h>
+
 #import <NSHash/NSString+NSHash.h>
 #import <Reachability/Reachability.h>
-
-#import "LEColorPicker.h"
+#import <LEColorPicker/LEColorPicker.h>
 
 static NSString * const kTOLDevAdsBaseURL = @"https://itunes.apple.com";
 static NSString * const kTOLDevAdsLookupPath = @"lookup";
@@ -27,6 +29,7 @@ static NSString * const kTOLDevAdsAppKeyIconURL100 = @"artworkUrl100";
 static NSString * const kTOLDevAdsAppKeyIconURL512 = @"artworkUrl512";
 static NSString * const kTOLDevAdsAppKeyAverageRatingCurrentVersion = @"averageUserRatingForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyBundleId = @"bundleId";
+static NSString * const kTOLDevAdsAppKeyAppID = @"trackId";
 static NSString * const kTOLDevAdsAppKeyFormattedPrice = @"formattedPrice";
 static NSString * const kTOLDevAdsAppKeyRatingCountForCurrentVersion = @"userRatingCountForCurrentVersion";
 static NSString * const kTOLDevAdsAppKeyLinkURL = @"trackViewUrl";
@@ -54,7 +57,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 @end
 
-@interface TOLDeveloperAds () <NSURLConnectionDataDelegate>
+@interface TOLDeveloperAds () <NSURLConnectionDataDelegate, SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, strong) NSTimer *adTimer;
 @property (nonatomic, strong) NSArray *developerApps;
@@ -579,12 +582,40 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 #pragma mark - Touch Handling
 - (void)bannerTapped:(UITapGestureRecognizer *)tapGesture{
-    NSString *destinationURLString = self.developerApps[self.currentAdIndex][kTOLDevAdsAppKeyLinkURL];
-    destinationURLString = [destinationURLString componentsSeparatedByString:@"?"][0];
     
-    NSURL *destinationURL = [NSURL URLWithString:destinationURLString];
-    
-    [[UIApplication sharedApplication] openURL:destinationURL];
+    id itunesIdentifier = self.developerApps[self.currentAdIndex][kTOLDevAdsAppKeyAppID];
+    SKStoreProductViewController *productViewController = [SKStoreProductViewController new];
+    NSDictionary *product = @{SKStoreProductParameterITunesItemIdentifier: itunesIdentifier};
+    productViewController.delegate = self;
+    [productViewController
+     loadProductWithParameters:product
+     completionBlock:^(BOOL result, NSError *error) {
+         if (!result || (error.domain == SKErrorDomain)) {
+             NSString *destinationURLString = self.developerApps[self.currentAdIndex][kTOLDevAdsAppKeyLinkURL];
+//             destinationURLString = [destinationURLString componentsSeparatedByString:@"?"][0];
+             NSURL *destinationURL = [NSURL URLWithString:destinationURLString];
+             
+             [[UIApplication sharedApplication] openURL:destinationURL];
+         } else {
+             [self.parentViewController presentViewController:productViewController
+                                                     animated:YES
+                                                   completion:^{
+                                                       [self pauseAdRequests];
+                                                   }];
+         }
+         
+         if (error) {
+             TOLWLog(@"StoreKit product load completed with error: %@", error);
+         }
+     }];
+}
+
+#pragma mark - SKStoreProductViewControllerDelegate
+
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:^(void){
+        [self startAdRequests];
+    }];
 }
 
 #pragma mark - Optional Methods
@@ -595,9 +626,6 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
                                                       selector:@selector(requestNextAdBanner)
                                                       userInfo:nil
                                                        repeats:YES];
-        
-        //Immediately start a new request
-        [self requestNextAdBanner];
     }
     
     [[NSRunLoop currentRunLoop] addTimer:self.adTimer forMode:NSDefaultRunLoopMode];
@@ -605,6 +633,7 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
 
 - (void)pauseAdRequests{
     [self.adTimer invalidate];
+    self.adTimer = nil;
 }
 
 + (BOOL)requiresPublisherId{

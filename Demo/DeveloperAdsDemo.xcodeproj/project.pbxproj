@@ -19,6 +19,7 @@
 		46ACBE1616BF570F00350976 /* frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46ACBE1216BF570F00350976 /* frame@2x.png */; };
 		46ACBE1716BF570F00350976 /* pricetag.png in Resources */ = {isa = PBXBuildFile; fileRef = 46ACBE1316BF570F00350976 /* pricetag.png */; };
 		46ACBE1816BF570F00350976 /* pricetag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46ACBE1416BF570F00350976 /* pricetag@2x.png */; };
+		46B59BD419A5902300312B5C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46B59BD319A5902300312B5C /* StoreKit.framework */; };
 		46D9ECC7169D039800C06EFD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC6169D039800C06EFD /* UIKit.framework */; };
 		46D9ECC9169D039800C06EFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECC8169D039800C06EFD /* Foundation.framework */; };
 		46D9ECCB169D039800C06EFD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D9ECCA169D039800C06EFD /* CoreGraphics.framework */; };
@@ -31,9 +32,6 @@
 		46D9ECE0169D039800C06EFD /* TOLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D9ECDF169D039800C06EFD /* TOLViewController.m */; };
 		46D9ECE3169D039800C06EFD /* TOLViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECE1169D039800C06EFD /* TOLViewController_iPhone.xib */; };
 		46D9ECE6169D039800C06EFD /* TOLViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46D9ECE4169D039800C06EFD /* TOLViewController_iPad.xib */; };
-		46DFDAA716A7C5200061D5DE /* LEColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DFDAA216A7C5200061D5DE /* LEColorPicker.m */; };
-		46DFDAA816A7C5200061D5DE /* UIColor+YUVSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DFDAA416A7C5200061D5DE /* UIColor+YUVSpace.m */; };
-		46DFDAA916A7C5200061D5DE /* UIImage+LEColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 46DFDAA616A7C5200061D5DE /* UIImage+LEColorPicker.m */; };
 		BF72DFD61D8B4E6FB527493C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA9A0D6BA8940B58B02D5A3 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +53,7 @@
 		46ACBE1216BF570F00350976 /* frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame@2x.png"; sourceTree = "<group>"; };
 		46ACBE1316BF570F00350976 /* pricetag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pricetag.png; sourceTree = "<group>"; };
 		46ACBE1416BF570F00350976 /* pricetag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pricetag@2x.png"; sourceTree = "<group>"; };
+		46B59BD319A5902300312B5C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		46D9ECC2169D039800C06EFD /* DeveloperAdsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeveloperAdsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D9ECC6169D039800C06EFD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		46D9ECC8169D039800C06EFD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -72,12 +71,6 @@
 		46D9ECDF169D039800C06EFD /* TOLViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TOLViewController.m; sourceTree = "<group>"; };
 		46D9ECE2169D039800C06EFD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TOLViewController_iPhone.xib; sourceTree = "<group>"; };
 		46D9ECE5169D039800C06EFD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TOLViewController_iPad.xib; sourceTree = "<group>"; };
-		46DFDAA116A7C5200061D5DE /* LEColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LEColorPicker.h; sourceTree = "<group>"; };
-		46DFDAA216A7C5200061D5DE /* LEColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LEColorPicker.m; sourceTree = "<group>"; };
-		46DFDAA316A7C5200061D5DE /* UIColor+YUVSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+YUVSpace.h"; sourceTree = "<group>"; };
-		46DFDAA416A7C5200061D5DE /* UIColor+YUVSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+YUVSpace.m"; sourceTree = "<group>"; };
-		46DFDAA516A7C5200061D5DE /* UIImage+LEColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+LEColorPicker.h"; sourceTree = "<group>"; };
-		46DFDAA616A7C5200061D5DE /* UIImage+LEColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LEColorPicker.m"; sourceTree = "<group>"; };
 		9F3F7CA618204A4785DEB776 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		BFA9A0D6BA8940B58B02D5A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -87,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46B59BD419A5902300312B5C /* StoreKit.framework in Frameworks */,
 				4640F74E169E7F260008D6EB /* QuartzCore.framework in Frameworks */,
 				46D9ECC7169D039800C06EFD /* UIKit.framework in Frameworks */,
 				46D9ECC9169D039800C06EFD /* Foundation.framework in Frameworks */,
@@ -132,8 +126,6 @@
 		46D9ECB7169D039800C06EFD = {
 			isa = PBXGroup;
 			children = (
-				46DFDA9E16A7C5180061D5DE /* Vendor */,
-				4640F74D169E7F260008D6EB /* QuartzCore.framework */,
 				468A4FA8169D256D007DF9B9 /* Podfile */,
 				46D9ECCC169D039800C06EFD /* DeveloperAdsDemo */,
 				468A4E8D169D0464007DF9B9 /* TOLDeveloperAds */,
@@ -154,6 +146,8 @@
 		46D9ECC5169D039800C06EFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				46B59BD319A5902300312B5C /* StoreKit.framework */,
+				4640F74D169E7F260008D6EB /* QuartzCore.framework */,
 				46D9ECC6169D039800C06EFD /* UIKit.framework */,
 				46D9ECC8169D039800C06EFD /* Foundation.framework */,
 				46D9ECCA169D039800C06EFD /* CoreGraphics.framework */,
@@ -188,28 +182,6 @@
 				46D9ECDC169D039800C06EFD /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		46DFDA9E16A7C5180061D5DE /* Vendor */ = {
-			isa = PBXGroup;
-			children = (
-				46DFDAA016A7C5200061D5DE /* LEColorPicker */,
-			);
-			name = Vendor;
-			sourceTree = "<group>";
-		};
-		46DFDAA016A7C5200061D5DE /* LEColorPicker */ = {
-			isa = PBXGroup;
-			children = (
-				46DFDAA116A7C5200061D5DE /* LEColorPicker.h */,
-				46DFDAA216A7C5200061D5DE /* LEColorPicker.m */,
-				46DFDAA316A7C5200061D5DE /* UIColor+YUVSpace.h */,
-				46DFDAA416A7C5200061D5DE /* UIColor+YUVSpace.m */,
-				46DFDAA516A7C5200061D5DE /* UIImage+LEColorPicker.h */,
-				46DFDAA616A7C5200061D5DE /* UIImage+LEColorPicker.m */,
-			);
-			name = LEColorPicker;
-			path = Vendor/LEColorPicker/LEColorPicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,9 +283,6 @@
 				46D9ECE0169D039800C06EFD /* TOLViewController.m in Sources */,
 				468A4E91169D047C007DF9B9 /* TOLDeveloperAds.m in Sources */,
 				4640F74B169E4C870008D6EB /* TOLDeveloperBannerView.m in Sources */,
-				46DFDAA716A7C5200061D5DE /* LEColorPicker.m in Sources */,
-				46DFDAA816A7C5200061D5DE /* UIColor+YUVSpace.m in Sources */,
-				46DFDAA916A7C5200061D5DE /* UIImage+LEColorPicker.m in Sources */,
 				4637FB8216C1E7D700520CDC /* TOLStarsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
