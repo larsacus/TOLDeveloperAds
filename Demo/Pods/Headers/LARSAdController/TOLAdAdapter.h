@@ -1,1 +1,0 @@
-../../LARSAdController/Source/TOLAdAdapter.h
