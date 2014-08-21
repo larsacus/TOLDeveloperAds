@@ -5,13 +5,17 @@ PODS:
   - Reachability (3.1.1)
 
 DEPENDENCIES:
-  - LARSAdController/Core (~> 3.0)
+  - LARSAdController/Core (from `Vendor/LARSAdController`)
   - LEColorPicker
   - NSHash
   - Reachability (~> 3.1)
 
+EXTERNAL SOURCES:
+  LARSAdController:
+    :path: Vendor/LARSAdController
+
 SPEC CHECKSUMS:
-  LARSAdController: d4d8ac28441cccadb7278d59a173a7602e5d04a2
+  LARSAdController: b41dc91aa4440508cb709ccfc5a14c67d680d217
   LEColorPicker: cd557bb4a723a7f44d96573b214a0787b640acda
   NSHash: 757e3ba784954b730eae472f3f4e12eb79a18d82
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7

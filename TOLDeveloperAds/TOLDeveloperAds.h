@@ -21,7 +21,6 @@
 
 - (void)layoutBannerForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
-+ (BOOL)requiresPublisherId;
 - (void)startAdRequests;
 - (void)pauseAdRequests;
 - (NSString *)friendlyNetworkDescription;

@@ -636,10 +636,6 @@ static NSString * const kTOLDevAdsAppKindSoftware = @"software";
     self.adTimer = nil;
 }
 
-+ (BOOL)requiresPublisherId{
-    return YES;
-}
-
 - (NSString *)friendlyNetworkDescription{
     return @"Developer Ads";
 }

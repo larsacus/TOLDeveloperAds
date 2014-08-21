@@ -1,6 +1,6 @@
 platform :ios, '5.0'
 
-pod 'LARSAdController/Core', '~> 3.0'
+pod 'LARSAdController/Core', :path => 'Vendor/LARSAdController'
 pod 'LEColorPicker'
 pod 'NSHash'
 pod 'Reachability', '~> 3.1'
