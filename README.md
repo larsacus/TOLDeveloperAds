@@ -1,4 +1,4 @@
-TOLDeveloperAds
+# TOLDeveloperAds
 ===============
 
 Easily create free, beautiful in-app banners for all of your other App Store apps with a single line of code:
@@ -19,14 +19,14 @@ This is generally what it will look like in portrait mode (thanks to [Eric Celed
 
 ![](Demo/devad.png)
 
-#Development
+# Development
 **This project is very much in development and should not be used for production... yet.** If you are interested in using this in production or extending this to use for production, feel free to help out. Check the [issues](http://github.com/larsacus/TOLDeveloperAds/issues) for planned features not yet implemented or bugs being tracked.
 
 If you don't/can't contribute to the project, feel free to submit an issue on features you would like to see or use-cases that may not currently be considered.
 
 Check out the `Demo/` folder for the project being used for development, which should include all pods necessary.
 
-#Dependencies
+# Dependencies
 TOLDeveloperAds is depended by [LARSAdController](http://larsacus.github.com/LARSAdController). The easiest way to manage this dependency is by using Cocoapods:
 
 ``` ruby
@@ -43,7 +43,7 @@ pod 'Reachability', '~>3.1'
 
 TOLDeveloperAds requires iOS 5.0+
 
-#Features
+# Features
 Features of TOLDeveloperAds include:
 
 1. Beautiful enough to include in even your *non* ad-enabled apps, maybe in a settings screen or on your "about" section
@@ -55,7 +55,7 @@ Features of TOLDeveloperAds include:
 7. Auto-exclusion of mac apps
 7. Leverages all the great features of [LARSAdController](http://larsacus.github.com/LARSAdController) to integrate your existing ads if you have them. Never have unfilled ad inventory again.
 
-#MIT License
+# MIT License
 Copyright (c) 2014 Lars Anderson, theonlylars
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
